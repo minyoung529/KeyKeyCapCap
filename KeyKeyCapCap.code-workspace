@@ -10,7 +10,13 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"files.associations": {
+			"string": "cpp",
+			"filesystem": "cpp",
+			"iosfwd": "cpp",
+			"xstring": "cpp"
+		}
 	},
 	"extensions": {
 		"recommendations": [
