@@ -5,14 +5,15 @@
 
 void UButtonAction::StartAction()
 {
+	SetScaleTime(10);
 }
 
-void UButtonAction::SetScaleTime(float maxScale, float clickCount)
+void UButtonAction::SetScaleTime(float maxScale)
 {
+	gameOver = false;
+	isStopped = false;
 	MAX_SCALETIME = maxScale;
-	TotalDamage = MAX_SCALETIME / 2;
-
-	addScale = 1 / clickCount;
+	TotalDamage = 0.5;
 }
 
 void UButtonAction::SetValue(float scale)
@@ -22,7 +23,7 @@ void UButtonAction::SetValue(float scale)
 	{
 		Fail();
 	}
-	else if (TotalDamage >= MAX_SCALETIME)
+	else if (TotalDamage >= 1)
 	{
 		Success();
 	}
@@ -31,12 +32,18 @@ void UButtonAction::SetValue(float scale)
 
 void UButtonAction::Success()
 {
-	SetScaleTime(10, 10);
+	if (gameOver) return;
+	gameOver = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Success"));
+	UE_LOG(LogTemp, Log, TEXT("Success"));
 }
 
 void UButtonAction::Fail()
 {
-	SetScaleTime(10, 10);
+	if (gameOver) return;
+	gameOver = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Fail"));
+	UE_LOG(LogTemp, Log, TEXT("Fail"));
 }
 
 // Native Func
@@ -46,7 +53,7 @@ void UButtonAction::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	SetScaleTime(10, 10);
+	SetScaleTime(10);
 }
 
 // Update
@@ -54,5 +61,5 @@ void UButtonAction::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if(!isStopped)	SetValue((TotalDamage - InDeltaTime)*speed);
+	if(!isStopped && !gameOver)	SetValue((TotalDamage - (InDeltaTime*speed)));
 }

@@ -16,11 +16,11 @@ class KEYKEYCAPCAP_API UButtonAction : public UUserWidget
 public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	void StartAction();
-
-	void SetScaleTime(float maxScale, float clickCount);
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	void SetValue(float scale);
-
+	
+	void SetScaleTime(float maxScale);
+	
 	void Success();
 	void Fail();
 
@@ -29,16 +29,19 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 public:
-	float MAX_SCALETIME = 10;
 	const float MIN_SCALETIME = 0;
+	float MAX_SCALETIME = 10;
+	
+	float scaleTime = 0;
+	float speed = 0.5;
+	bool isStopped = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	float TotalDamage = 0;
 
-	float scaleTime = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	float addScale = 0.25;
-	float speed = 0.2;
 
-	bool isStopped = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
+	bool gameOver = false;
 };
