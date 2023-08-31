@@ -3,23 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
+#include "MyKeyLibrary.h"
+#include "InputCoreTypes.h"
 #include <iostream>
+
 using namespace std;
 
-enum class STAT_TYPE
-{
-	ATTACK,
-	SHIELD,
-	HEAL,
-
-	COUNT
-};
 
 /**
- * 
+ *
  */
-class /*KEYKEYCAPCAP_API*/ KeyCap
+class KEYKEYCAPCAP_API KeyCap
 {
 public:
 	KeyCap();
@@ -44,7 +38,7 @@ public:	// Set
 	void SetShield(float _shield)
 	{
 		shield = _shield;
-	} 
+	}
 
 	void SetHeal(float _heal)
 	{
@@ -77,10 +71,10 @@ public:	// Set
 	}
 
 public:	// Get
-	float GetAttack(){ return attack; }	
-	float GetShield(){ return shield; }
-	float GetHeal(){ return heal; }
-	FKey GetKey(){ return key; }
+	float GetAttack() { return attack; }
+	float GetShield() { return shield; }
+	float GetHeal() { return heal; }
+	FKey GetKey() { return key; }
 	float GetHp() { return hp; }
 	int GetLevel() { return level; }
 };
