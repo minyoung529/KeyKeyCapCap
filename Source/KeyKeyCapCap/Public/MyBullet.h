@@ -3,51 +3,47 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MyKeyLibrary.h"
 #include "GameFramework/Actor.h"
-#include "KeycapActor.generated.h"
-
-const int MAX_LEVEL = 7;
+#include "MyBullet.generated.h"
 
 UCLASS()
-class KEYKEYCAPCAP_API AKeycapActor : public AActor
+class KEYKEYCAPCAP_API AMyBullet : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AKeycapActor();
+	AMyBullet();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void SetLevel();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	void SetMesh();
+private:
+	FVector direction;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KeyInput)
-	KEY_TYPE key;
+	void SetMesh();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	UStaticMeshComponent* baseMesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Effect)
-	//class UNiagaraSystem* enterEffect;
+public:
+	void SetDirection(FVector vector)
+	{
+		direction = vector;
+	}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (MakeEditWidget = true))
-	TArray<FVector> upgradeColors;
+	FVector GetDirection()
+	{
+		return direction;
+	}
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
-	float moveDistance = 1.f;
-
-private:
-	int level = 0;
-	int clickNum = 0;
+	float speed = 1.f;
 };
