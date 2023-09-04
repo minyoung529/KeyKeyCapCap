@@ -54,7 +54,28 @@ void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
 		preference.Add(TTuple<EEnemyPreference, int32>(prefer, num));
 }
 
-void AEnemy::SetCharacter()
+EEnemyState AEnemy::GetMap()
+{
+	EEnemyState result = EEnemyState::Move;
+	if (hp > maxHp / 2)
+	{
+		result = GetRandomVal(40, 35, 15, 10);
+	}
+	else
+	{
+		result = GetRandomVal(40, 35, 25, 0);
+	}
+	return EEnemyState();
+}
+
+EEnemyState AEnemy::GetRandomVal(int first,int second,int third,int fourth)
+{
+	int ranNum = FMath::RandRange(1, 100);
+	//if(first>=ranNum)
+	return EEnemyState();
+}
+
+void AEnemy::InitCharacter()
 {
 }
 

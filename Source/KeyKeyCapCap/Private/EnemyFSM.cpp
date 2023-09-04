@@ -20,6 +20,7 @@ void UEnemyFSM::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	me = Cast<AEnemy>(GetOwner());
 }
 
@@ -35,15 +36,24 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UEnemyFSM::Attack()
 {
 }
-
-void UEnemyFSM::OnDamage()
+void UEnemyFSM::FindTargets()
 {
 }
-
-void UEnemyFSM::Waiting()
+void UEnemyFSM::FindTarget()
 {
 }
+EEnemyState UEnemyFSM::ChooseNextAct()
+{
 
+	return EEnemyState::Move;
+}
+void UEnemyFSM::Move()
+{
+	/*if (dir.Size() < attackRange)
+	{
+		mState = ChooseNextAct();
+	}*/
+}
 void UEnemyFSM::TotalAttack()
 {
 }
@@ -62,6 +72,12 @@ void UEnemyFSM::Heal()
 
 void UEnemyFSM::HethalMove()
 {
+	if (canHethalMove)
+		return;
+}
+
+void UEnemyFSM::Damage()
+{
 }
 
 void UEnemyFSM::Death()
@@ -77,5 +93,9 @@ void UEnemyFSM::Death()
 		//die call!
 		me->Destroy();
 	}
+}
+
+void UEnemyFSM::CoolTime()
+{
 }
 

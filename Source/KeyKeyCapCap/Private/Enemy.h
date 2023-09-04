@@ -36,17 +36,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
-	virtual void SetCharacter() override;
+	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
 	UPROPERTY(BlueprintReadOnly,Category = GameInfo)
 	TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		int32 needHethalMoveTurn;
+		float needHethalMoveTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
 		class UEnemyFSM* fsm;
 private:
 	void InitMap();
 	void SetMap(EEnemyPreference, int32);
-
+	EEnemyState GetRandomVal(int,int,int,int);
+public:
+	EEnemyState GetMap();
 };

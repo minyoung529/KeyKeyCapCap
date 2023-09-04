@@ -27,16 +27,18 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		float atk = 0;
+		float attack = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+		float maxHp = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float hp = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		float lv = 0;
+		float level = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float heal = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		float def = 0;
+		float shield = 0;
 public:
-	virtual void SetCharacter();
+	virtual void InitCharacter();
 	virtual void Act();
 };

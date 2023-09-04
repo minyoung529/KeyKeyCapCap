@@ -8,7 +8,7 @@ ACombatCharacter::ACombatCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SetCharacter();
+	InitCharacter();
 }
 
 // Called when the game starts or when spawned
@@ -31,13 +31,14 @@ void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
-void ACombatCharacter::SetCharacter()
+void ACombatCharacter::InitCharacter()
 {
-	atk = 20;
+	attack = 20;
+	maxHp = 100;
 	hp = 100;
-	lv = 1;
+	level = 1;
 	heal = 0;
-	def = 0;
+	shield = 0;
 }
 
 void ACombatCharacter::Act()
