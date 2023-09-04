@@ -39,8 +39,8 @@ public:
 	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
-	UPROPERTY(BlueprintReadOnly,Category = GameInfo)
-	TMap<EEnemyPreference, int32> preference;
+	UPROPERTY(BlueprintReadOnly, Category = GameInfo)
+		TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float needHethalMoveTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
@@ -48,7 +48,10 @@ public:
 private:
 	void InitMap();
 	void SetMap(EEnemyPreference, int32);
-	EEnemyState GetRandomVal(int,int,int,int);
+	EEnemyState GetRandomVal(int, int, int, int);
 public:
 	EEnemyState GetMap();
+private:
+	FString EnumToString(EEnemyPreference EnumValue);
+	EEnemyState StringToEnum(FString StringValue);
 };

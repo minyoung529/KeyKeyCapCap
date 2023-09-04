@@ -49,10 +49,15 @@ EEnemyState UEnemyFSM::ChooseNextAct()
 }
 void UEnemyFSM::Move()
 {
-	/*if (dir.Size() < attackRange)
+	FVector dest = target->GetActorLocation();
+	// 방향
+	FVector dir = dest - me->GetActorLocation();
+	// 방향으로 이동
+	me->AddMovementInput(dir.GetSafeNormal());
+	if (dir.Size() < attackRange)
 	{
 		mState = ChooseNextAct();
-	}*/
+	}
 }
 void UEnemyFSM::TotalAttack()
 {

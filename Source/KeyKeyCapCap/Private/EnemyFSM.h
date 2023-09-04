@@ -9,7 +9,6 @@ UENUM()
 enum class EEnemyState : uint8
 {
 	Move,
-	Damage,
 	Death,
 	TotalAttack, //전체 인원 공격
 	SingleAttack, //한 명 공격
@@ -65,6 +64,8 @@ public:
 		bool canHethalMove = false;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		bool canUseHethalMove = false;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = FSM)
+		class ACharacter* target;
 public:
 	void CoolTime();
 };

@@ -37,13 +37,13 @@ void AEnemy::InitMap()
 	srand((unsigned)time(NULL));
 
 	TArray<int32> randomList = { 0,1,2,3 };
-	for (int i = 0; i <= 3; i++)
+	for (int i = 1; i <= 3; i++)
 	{
-		int32 ran = FMath::RandRange(0, randomList.Num());
+		int32 ran = FMath::RandRange(1, randomList.Num()); //find random between 1~3
 		preference.Add((EEnemyPreference)i, ran);
 		randomList.RemoveAt(ran);
-		preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, ran));
 	}
+	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, 4));
 }
 
 void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
@@ -68,11 +68,20 @@ EEnemyState AEnemy::GetMap()
 	return EEnemyState();
 }
 
-EEnemyState AEnemy::GetRandomVal(int first,int second,int third,int fourth)
+
+EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
 	int ranNum = FMath::RandRange(1, 100);
-	//if(first>=ranNum)
-	return EEnemyState();
+	int chooseVal = 0;
+	if (first >= ranNum)
+		chooseVal = 1;
+	else if (first + second >= ranNum)
+		chooseVal = 2;
+	else if (first + second + third >= ranNum)
+		chooseVal = 3;
+	else
+		chooseVal = 4;
+	return StringToEnum(EnumToString(*preference.FindKey(1)));
 }
 
 void AEnemy::InitCharacter()
@@ -83,3 +92,24 @@ void AEnemy::Act()
 {
 }
 
+FString AEnemy::EnumToString(EEnemyPreference EnumValue)
+{
+	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyPreference"), true);
+	if (!EnumPtr)
+	{
+		return FString(TEXT("Invalid"));
+	}
+
+	return EnumPtr->GetNameStringByValue((int32)EnumValue);
+}
+
+EEnemyState AEnemy::StringToEnum(FString StringValue)
+{
+	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyState"), true);
+	if (!EnumPtr)
+	{
+		return EEnemyState::Move; // Return some default value or handle the error as needed.
+	}
+
+	return (EEnemyState)EnumPtr->GetIndexByName(*StringValue);
+}
