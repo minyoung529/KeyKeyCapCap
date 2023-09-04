@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EnemyFSM.generated.h"
-
+UENUM()
 enum class EEnemyState : uint8
 {
 	Move,
