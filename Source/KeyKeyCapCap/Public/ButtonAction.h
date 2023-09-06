@@ -6,42 +6,43 @@
 #include "Blueprint/UserWidget.h"
 #include "ButtonAction.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSuccessSignature);
+
 class UProgressBar;
 UCLASS(HideDropdown)
 
 class KEYKEYCAPCAP_API UButtonAction : public UUserWidget
 {
 	GENERATED_BODY()
-	
 public:
-	UFUNCTION(BlueprintCallable, Category = "Action")
-	void StartAction();
-	UFUNCTION(BlueprintCallable, Category = "Action")
-	void SetValue(float scale);
-	
-	void SetScaleTime(float maxScale);
-	
+	UFUNCTION()
+	void OnSuccessEvent();
+	UPROPERTY(BlueprintAssignable, Category = "Action")
+	FSuccessSignature OnSuccessDelegate;
+
+
 	void Success();
 	void Fail();
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void Reset(float maxScale);
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void SetValue(float scale);
 
 protected:
 	virtual void NativeConstruct();
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
+	float Value = 0;
+
 	const float MIN_SCALETIME = 0;
-	float MAX_SCALETIME = 10;
+	const float MAX_SCALETIME = 1;
+	float clickCount = 10;
+	float addScale = 0.1;
+	float speed = 0.1;
 	
-	float scaleTime = 0;
-	float speed = 0.5;
 	bool isStopped = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	float TotalDamage = 0;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	float addScale = 0.25;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	bool gameOver = false;
 };

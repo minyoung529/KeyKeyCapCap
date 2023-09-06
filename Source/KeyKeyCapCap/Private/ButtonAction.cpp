@@ -3,47 +3,35 @@
 
 #include "ButtonAction.h"
 
-void UButtonAction::StartAction()
+void UButtonAction::Reset(float _clickCount)
 {
-	SetScaleTime(10);
-}
-
-void UButtonAction::SetScaleTime(float maxScale)
-{
-	gameOver = false;
 	isStopped = false;
-	MAX_SCALETIME = maxScale;
-	TotalDamage = 0.5;
+	clickCount = _clickCount;
+	addScale = MAX_SCALETIME / clickCount;
+	Value = 0.5;
 }
 
 void UButtonAction::SetValue(float scale)
 {
-	TotalDamage = scale;
-	if (TotalDamage <= MIN_SCALETIME)
-	{
-		Fail();
-	}
-	else if (TotalDamage >= 1)
-	{
-		Success();
-	}
+	Value = scale;
+
+	if (Value <= MIN_SCALETIME) Fail();
+	else if (Value >= MAX_SCALETIME) Success();
 }
 
+void UButtonAction::OnSuccessEvent()
+{
+}
 
 void UButtonAction::Success()
 {
-	if (gameOver) return;
-	gameOver = true;
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Success"));
-	UE_LOG(LogTemp, Log, TEXT("Success"));
+	if (OnSuccessDelegate.IsBound() == true) OnSuccessDelegate.Broadcast();
+	Reset(clickCount * 2);
 }
 
 void UButtonAction::Fail()
 {
-	if (gameOver) return;
-	gameOver = true;
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Fail"));
-	UE_LOG(LogTemp, Log, TEXT("Fail"));
+	Reset(clickCount);
 }
 
 // Native Func
@@ -53,7 +41,7 @@ void UButtonAction::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	SetScaleTime(10);
+	Reset(10);
 }
 
 // Update
@@ -61,5 +49,5 @@ void UButtonAction::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if(!isStopped && !gameOver)	SetValue((TotalDamage - (InDeltaTime*speed)));
+	if (!isStopped) SetValue((Value - (InDeltaTime * speed)));
 }
