@@ -22,6 +22,7 @@ void UEnemyFSM::BeginPlay()
 
 
 	me = Cast<AEnemy>(GetOwner());
+	mState = EEnemyState::Move;
 }
 
 
@@ -29,10 +30,32 @@ void UEnemyFSM::BeginPlay()
 void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	CoolTime();
+	switch (mState)
+	{
+	case EEnemyState::Move:
+		Move();
+		break;
+	case EEnemyState::Death:
+		Death();
+		break;
+	case EEnemyState::TotalAttack:
+		break;
+	case EEnemyState::SingleAttack:
+		break;
+	case EEnemyState::Defence:
+		Defence();
+		break;
+	case EEnemyState::Heal:
+		Heal();
+		break;
+	case EEnemyState::HethalMove:
+		HethalMove();
+		break;
+	default:
+		break;
+	}
 }
-
 void UEnemyFSM::Attack()
 {
 }
@@ -44,11 +67,16 @@ void UEnemyFSM::FindTarget()
 }
 EEnemyState UEnemyFSM::ChooseNextAct()
 {
-
-	return EEnemyState::Move;
+	if (canUseHethalMove && canHethalMove) //필살기 사용 가능
+	{
+		return EEnemyState::HethalMove;
+	}
+	
+	return me->GetMap();
 }
 void UEnemyFSM::Move()
 {
+	if (target == NULL) return;
 	FVector dest = target->GetActorLocation();
 	// 방향
 	FVector dir = dest - me->GetActorLocation();
@@ -73,12 +101,23 @@ void UEnemyFSM::Defence()
 
 void UEnemyFSM::Heal()
 {
+	me->ChangeHp(me->heal); 
+	currentTime += GetWorld()->DeltaTimeSeconds;
+	// 힐 할 시 짐시 기다리기
+	if (currentTime > healDelayTime)
+	{
+		mState = ChooseNextAct();
+		currentTime = 0;
+	}
 }
 
 void UEnemyFSM::HethalMove()
 {
 	if (canHethalMove)
 		return;
+	//미니게임. 
+	canUseHethalMove = false;
+	currentCoolTime = 0;
 }
 
 void UEnemyFSM::Damage()
@@ -102,5 +141,10 @@ void UEnemyFSM::Death()
 
 void UEnemyFSM::CoolTime()
 {
+	currentCoolTime += GetWorld()->DeltaTimeSeconds;
+	if (currentCoolTime > hethalMoveDelayTime)
+	{
+		canUseHethalMove = true;
+	}
 }
 

@@ -55,17 +55,26 @@ public:
 	UPROPERTY()
 		class AEnemy* me;
 	UPROPERTY(EditAnywhere, Category = FSM)
+		class ACharacter* target;
+	UPROPERTY(EditAnywhere, Category = FSM)
 		float dieSpeed = 50.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float attackRange = 150.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float attackDelayTime = 2.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
+		float healDelayTime = 5.f;
+	UPROPERTY(EditAnywhere, Category = FSM)
+		float hethalMoveDelayTime = 15.f;
+	UPROPERTY(EditAnywhere, Category = FSM)
 		bool canHethalMove = false;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		bool canUseHethalMove = false;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = FSM)
-		class ACharacter* target;
+	
+	bool isDefence = false; 
+private: // cool time
+	float currentCoolTime = 0;
+	float currentTime = 0;
 public:
 	void CoolTime();
 };

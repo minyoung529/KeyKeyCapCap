@@ -51,6 +51,7 @@ private:
 	EEnemyState GetRandomVal(int, int, int, int);
 public:
 	EEnemyState GetMap();
+	void ChangeHp(int);
 private:
 	FString EnumToString(EEnemyPreference EnumValue);
 	EEnemyState StringToEnum(FString StringValue);

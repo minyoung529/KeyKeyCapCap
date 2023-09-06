@@ -68,6 +68,11 @@ EEnemyState AEnemy::GetMap()
 	return EEnemyState();
 }
 
+void AEnemy::ChangeHp(int changeHp)
+{
+	hp += changeHp;
+}
+
 
 EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
@@ -81,7 +86,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		chooseVal = 3;
 	else
 		chooseVal = 4;
-	return StringToEnum(EnumToString(*preference.FindKey(1)));
+	return StringToEnum(EnumToString(*preference.FindKey(chooseVal)));
 }
 
 void AEnemy::InitCharacter()
