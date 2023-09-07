@@ -45,5 +45,5 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
-	float speed = 1.f;
+	float speed = 50.f;
 };

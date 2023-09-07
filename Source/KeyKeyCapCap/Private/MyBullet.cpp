@@ -18,7 +18,9 @@ AMyBullet::AMyBullet()
 void AMyBullet::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorRelativeScale3D(FVector(0.001f, 0.001f, 0.001f));
+	SetActorRelativeScale3D(FVector(0.0075f, 0.0075f, 0.0075f));
+	SetActorLocation(GetActorLocation() + FVector::UpVector);
+	direction = FVector::LeftVector;
 }
 
 // Called every frame
@@ -31,7 +33,7 @@ void AMyBullet::Tick(float DeltaTime)
 	SetActorLocation(destination);
 }
 
-void AKeycapActor::SetMesh()
+void AMyBullet::SetMesh()
 {
 	UStaticMesh* NewMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, L"/Script/Engine.StaticMesh'/Game/Bullet/sphere.sphere'"));
 

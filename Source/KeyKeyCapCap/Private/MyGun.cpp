@@ -34,6 +34,6 @@ void AMyGun::Fire()
 {
 	AMyBullet* bullet =
 		GetWorld()->SpawnActor<AMyBullet>(AMyBullet::StaticClass(),
-			GetActorLocation() + fireTransform->GetRelativeLocation(),
+			GetActorLocation() /*+ fireTransform->GetRelativeLocation()*/,
 			FRotator(), FActorSpawnParameters());
 }
