@@ -22,4 +22,11 @@ public:
 
 public:
 	static void CreateInstance();
+
+private:
+	TArray<class AKeycapActor*> keycaps;
+	TArray<class AMyGun*> guns;
+
+public:
+	void AddKeyCap(AKeycapActor* keycap);
 };

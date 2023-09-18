@@ -27,7 +27,9 @@ void AKeycapGenerator::BeginPlay()
 	for (int i = 0; i < (int)KEY_TYPE::Count; i++)
 	{
 		AKeycapActor* keycap =
-		world->SpawnActor<AKeycapActor>(AKeycapActor::StaticClass(), spawnLocation, rotator, spawnParams);
+			world->SpawnActor<AKeycapActor>(AKeycapActor::StaticClass(), spawnLocation, rotator, spawnParams);
+
+		GameManager::GetInstance()->AddKeyCap(keycap);
 
 		keycap->key = (KEY_TYPE)i;
 		keycap->SetMesh();
