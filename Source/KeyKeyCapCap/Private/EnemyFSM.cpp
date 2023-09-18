@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EnemyFSM.h"
+#include "MyTESTKeyboard.h"
 #include "Enemy.h"
+#include <Kismet/GameplayStatics.h>
 #include <Components/CapsuleComponent.h>
 
 // Sets default values for this component's properties
@@ -19,8 +21,7 @@ UEnemyFSM::UEnemyFSM()
 void UEnemyFSM::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	//UE_LOG(LogTemp, Display, TEXT(Cast<AMyTESTKeyboard>(actor)->GetName()));
 	me = Cast<AEnemy>(GetOwner());
 	mState = EEnemyState::Move;
 }
@@ -69,6 +70,8 @@ EEnemyState UEnemyFSM::ChooseNextAct()
 {
 	if (canUseHethalMove && canHethalMove) //필살기 사용 가능
 	{
+		canUseHethalMove = false;
+		currentCoolTime = 0;
 		return EEnemyState::HethalMove;
 	}
 	
@@ -89,18 +92,22 @@ void UEnemyFSM::Move()
 }
 void UEnemyFSM::TotalAttack()
 {
+	UE_LOG(LogTemp,Display, TEXT("TotalAttack"));
 }
 
 void UEnemyFSM::SingleAttack()
 {
+	UE_LOG(LogTemp,Display, TEXT("SingleAttack"));
 }
 
 void UEnemyFSM::Defence()
 {
+	UE_LOG(LogTemp,Display, TEXT("Defence"));
 }
 
 void UEnemyFSM::Heal()
 {
+	UE_LOG(LogTemp, Log, TEXT("Heal"));
 	me->ChangeHp(me->heal); 
 	currentTime += GetWorld()->DeltaTimeSeconds;
 	// 힐 할 시 짐시 기다리기
@@ -113,6 +120,7 @@ void UEnemyFSM::Heal()
 
 void UEnemyFSM::HethalMove()
 {
+	UE_LOG(LogTemp, Log, TEXT("HethalMove"));
 	if (canHethalMove)
 		return;
 	//미니게임. 
@@ -122,6 +130,7 @@ void UEnemyFSM::HethalMove()
 
 void UEnemyFSM::Damage()
 {
+	UE_LOG(LogTemp, Log, TEXT("Damage"));
 }
 
 void UEnemyFSM::Death()

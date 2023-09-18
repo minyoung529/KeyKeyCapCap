@@ -8,13 +8,13 @@
 UENUM()
 enum class EEnemyState : uint8
 {
-	Move,
-	Death,
 	TotalAttack, //전체 인원 공격
 	SingleAttack, //한 명 공격
 	Defence,
 	Heal,
 	HethalMove, // 필살기
+	Move,
+	Death,
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -55,7 +55,7 @@ public:
 	UPROPERTY()
 		class AEnemy* me;
 	UPROPERTY(EditAnywhere, Category = FSM)
-		class ACharacter* target;
+		class AActor* target;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float dieSpeed = 50.f;
 	UPROPERTY(EditAnywhere, Category = FSM)

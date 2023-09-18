@@ -54,5 +54,4 @@ public:
 	void ChangeHp(int);
 private:
 	FString EnumToString(EEnemyPreference EnumValue);
-	EEnemyState StringToEnum(FString StringValue);
 };
