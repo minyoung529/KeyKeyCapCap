@@ -25,6 +25,7 @@ public:
 
 private:
 	FVector direction;
+	float timer = 0.f;
 
 public:
 	void SetMesh();

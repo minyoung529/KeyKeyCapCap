@@ -2,6 +2,7 @@
 
 #include "KeycapActor.h"
 #include "MyKeyLibrary.h"
+#include "GameManager.h"
 //#include "C:/Program Files/Epic Games/UE/UE_5.1/Engine/Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
 
@@ -65,7 +66,9 @@ void AKeycapActor::Tick(float DeltaTime)
 		SetActorLocation(currentLocation);
 
 		clickNum++;
+
 		SetLevel();
+		GameManager::GetInstance()->Shoot();
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), enterEffect, GetActorLocation(), baseMesh->GetComponentRotation());
 	}
 

@@ -112,4 +112,5 @@ void MyKeyLibrary::SetMeshKeyMap()
 	meshKeyMap[(int)KEY_TYPE::Tab] = "Tab";
 	meshKeyMap[(int)KEY_TYPE::Enter] = "Enter";
 	meshKeyMap[(int)KEY_TYPE::Space] = "Space";
+	meshKeyMap[(int)KEY_TYPE::Shift] = "Shift";
 }

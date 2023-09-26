@@ -1,4 +1,5 @@
 #include "MyGun.h"
+#include "GameManager.h"
 #include "MyBullet.h"
 
 // Sets default values
@@ -14,6 +15,8 @@ AMyGun::AMyGun()
 void AMyGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameManager::GetInstance()->AddGun(this);
 }
 
 // Called every frame
@@ -26,7 +29,7 @@ void AMyGun::Tick(float DeltaTime)
 	if (timer > duration)
 	{
 		timer = 0.0f;
-		Fire();
+		//Fire();
 	}
 }
 

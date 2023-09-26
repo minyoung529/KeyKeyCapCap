@@ -31,6 +31,7 @@ enum class KEY_TYPE : uint8
 	Tab,
 	Enter,
 	Space,
+	Shift,
 
 	Count
 };

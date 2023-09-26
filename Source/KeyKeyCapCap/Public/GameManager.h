@@ -27,6 +27,10 @@ private:
 	TArray<class AKeycapActor*> keycaps;
 	TArray<class AMyGun*> guns;
 
+	int curGunIdx = 0;
+
 public:
 	void AddKeyCap(AKeycapActor* keycap);
+	void AddGun(AMyGun* gun);
+	void Shoot();
 };
