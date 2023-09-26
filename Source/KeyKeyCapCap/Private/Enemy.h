@@ -7,8 +7,8 @@
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
 #include "Enemy.generated.h"
-UENUM()
-enum class EEnemyPreference :uint8
+UENUM(BlueprintType)
+enum class EEnemyPreference : uint8
 {
 	TotalAttack, //전체 인원 공격
 	SingleAttack, //한 명 공격

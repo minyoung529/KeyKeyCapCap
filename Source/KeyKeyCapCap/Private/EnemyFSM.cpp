@@ -41,8 +41,8 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		Death();
 		break;
 	case EEnemyState::TotalAttack:
-		break;
 	case EEnemyState::SingleAttack:
+		Attack();
 		break;
 	case EEnemyState::Defence:
 		Defence();
@@ -57,14 +57,16 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		break;
 	}
 }
-void UEnemyFSM::Attack()
-{
-}
 void UEnemyFSM::FindTargets()
 {
 }
 void UEnemyFSM::FindTarget()
 {
+}
+
+void UEnemyFSM::Attack()
+{
+	UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
 }
 EEnemyState UEnemyFSM::ChooseNextAct()
 {
@@ -74,7 +76,7 @@ EEnemyState UEnemyFSM::ChooseNextAct()
 		currentCoolTime = 0;
 		return EEnemyState::HethalMove;
 	}
-	
+
 	return me->GetMap();
 }
 void UEnemyFSM::Move()
@@ -88,27 +90,28 @@ void UEnemyFSM::Move()
 	if (dir.Size() < attackRange)
 	{
 		mState = ChooseNextAct();
+	UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
 	}
 }
 void UEnemyFSM::TotalAttack()
 {
-	UE_LOG(LogTemp,Display, TEXT("TotalAttack"));
+	UE_LOG(LogTemp, Log, TEXT("FSM_TotalAttack"));
 }
 
 void UEnemyFSM::SingleAttack()
 {
-	UE_LOG(LogTemp,Display, TEXT("SingleAttack"));
+	UE_LOG(LogTemp, Log, TEXT("FSM_SingleAttack"));
 }
 
 void UEnemyFSM::Defence()
 {
-	UE_LOG(LogTemp,Display, TEXT("Defence"));
+	UE_LOG(LogTemp, Log, TEXT("FSM_Defence"));
 }
 
 void UEnemyFSM::Heal()
 {
-	UE_LOG(LogTemp, Log, TEXT("Heal"));
-	me->ChangeHp(me->heal); 
+	UE_LOG(LogTemp, Log, TEXT("FSM_Heal"));
+	me->ChangeHp(me->heal);
 	currentTime += GetWorld()->DeltaTimeSeconds;
 	// 힐 할 시 짐시 기다리기
 	if (currentTime > healDelayTime)
@@ -120,7 +123,7 @@ void UEnemyFSM::Heal()
 
 void UEnemyFSM::HethalMove()
 {
-	UE_LOG(LogTemp, Log, TEXT("HethalMove"));
+	UE_LOG(LogTemp, Log, TEXT("FSM_HethalMove"));
 	if (canHethalMove)
 		return;
 	//미니게임. 
@@ -130,7 +133,7 @@ void UEnemyFSM::HethalMove()
 
 void UEnemyFSM::Damage()
 {
-	UE_LOG(LogTemp, Log, TEXT("Damage"));
+	UE_LOG(LogTemp, Log, TEXT("FSM_Damage"));
 }
 
 void UEnemyFSM::Death()

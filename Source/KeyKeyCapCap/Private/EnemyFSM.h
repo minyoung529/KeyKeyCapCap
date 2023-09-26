@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EnemyFSM.generated.h"
-UENUM()
+UENUM(BlueprintType)
 enum class EEnemyState : uint8
 {
 	TotalAttack, //전체 인원 공격

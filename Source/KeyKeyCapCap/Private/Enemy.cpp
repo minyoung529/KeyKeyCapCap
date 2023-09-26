@@ -66,7 +66,7 @@ EEnemyState AEnemy::GetMap()
 	{
 		result = GetRandomVal(40, 35, 25, 0);
 	}
-	return EEnemyState();
+	return result;
 }
 
 void AEnemy::ChangeHp(int changeHp)
@@ -88,7 +88,8 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	else
 		chooseVal = 3;
 
-	FString strEnum = EnumToString(*preference.FindKey(chooseVal));
+	EEnemyPreference enumVal = *preference.FindKey(chooseVal);
+	FString strEnum = EnumToString(enumVal);
 	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyPreference"), true);
 	return (EEnemyState)EnumPtr->GetIndexByNameString("EEnemyState");
 }
