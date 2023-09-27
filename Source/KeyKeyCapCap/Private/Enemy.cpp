@@ -40,7 +40,7 @@ void AEnemy::InitMap()
 	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::HethalMove, 0));
 	for (int i = 1; i <= 3; i++)
 	{
-		int32 ran = FMath::RandRange(0, randomList.Num()-1); //find random between 0~3
+		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~3
 		preference.Add((EEnemyPreference)i, ran);
 		randomList.RemoveAt(ran);
 	}
@@ -88,10 +88,29 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	else
 		chooseVal = 3;
 
-	EEnemyPreference enumVal = *preference.FindKey(chooseVal);
-	FString strEnum = EnumToString(enumVal);
-	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyPreference"), true);
-	return (EEnemyState)EnumPtr->GetIndexByNameString("EEnemyState");
+	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
+	EEnemyState state;
+	switch (prefer)
+	{
+	case EEnemyPreference::TotalAttack:
+		state = EEnemyState::TotalAttack;
+		break;
+	case EEnemyPreference::SingleAttack:
+		state = EEnemyState::SingleAttack;
+		break;
+	case EEnemyPreference::Defence:
+		state = EEnemyState::Defence;
+		break;
+	case EEnemyPreference::Heal:
+		state = EEnemyState::Heal;
+		break;
+	case EEnemyPreference::HethalMove:
+		state = EEnemyState::HethalMove;
+		break;
+	default:
+		break;
+	}
+	return state;
 }
 
 void AEnemy::InitCharacter()
@@ -100,15 +119,4 @@ void AEnemy::InitCharacter()
 
 void AEnemy::Act()
 {
-}
-
-FString AEnemy::EnumToString(EEnemyPreference EnumValue)
-{
-	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyPreference"), true);
-	if (!EnumPtr)
-	{
-		return FString(TEXT("Invalid"));
-	}
-
-	return EnumPtr->GetNameStringByValue((int32)EnumValue);
 }

@@ -41,8 +41,10 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		Death();
 		break;
 	case EEnemyState::TotalAttack:
+		Attack(me->attack*0.8f);
+		break;
 	case EEnemyState::SingleAttack:
-		Attack();
+		Attack(me->attack*1.2f);
 		break;
 	case EEnemyState::Defence:
 		Defence();
@@ -64,7 +66,7 @@ void UEnemyFSM::FindTarget()
 {
 }
 
-void UEnemyFSM::Attack()
+void UEnemyFSM::Attack(float damage)
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
 }

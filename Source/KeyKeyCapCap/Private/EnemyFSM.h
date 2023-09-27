@@ -37,7 +37,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
-	void Attack();
+	void Attack(float damage);
 	void FindTargets();
 	void FindTarget();
 	EEnemyState ChooseNextAct();
