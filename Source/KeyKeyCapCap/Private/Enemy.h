@@ -10,8 +10,8 @@
 UENUM(BlueprintType)
 enum class EEnemyPreference : uint8
 {
-	TotalAttack, //전체 인원 공격
-	SingleAttack, //한 명 공격
+	BigAttack, //강공
+	SmallAttack, //약공
 	Defence,
 	Heal,
 	HethalMove, // 필살기

@@ -8,8 +8,8 @@
 UENUM(BlueprintType)
 enum class EEnemyState : uint8
 {
-	TotalAttack, //전체 인원 공격
-	SingleAttack, //한 명 공격
+	BigAttack, //전체 인원 공격
+	SmallAttack, //한 명 공격
 	Defence,
 	Heal,
 	HethalMove, // 필살기
@@ -37,14 +37,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
-	void Attack(float damage);
+	bool Attack(float damage);
 	void FindTargets();
 	void FindTarget();
 	EEnemyState ChooseNextAct();
 public://fsm function
 	void Move();
-	void TotalAttack();
-	void SingleAttack();
+	void BigAttack();
+	void SmallAttack();
 	void Defence();
 	void Heal();
 	void HethalMove();
@@ -74,7 +74,8 @@ public:
 	bool isDefence = false; 
 private: // cool time
 	float currentCoolTime = 0;
-	float currentTime = 0;
+	float currentHealTime = 0;
+	float currentAttackTime = 0;
 public:
 	void CoolTime();
 };

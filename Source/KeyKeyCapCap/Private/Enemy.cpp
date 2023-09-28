@@ -35,13 +35,14 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::InitMap()
 {
 	srand((unsigned)time(NULL));
-
-	TArray<int32> randomList = { 0,1,2 };
+	//0 : high priority
+	//4 : low priority
+	TArray<int32> randomList = { 1, 2,3 };
 	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::HethalMove, 0));
 	for (int i = 1; i <= 3; i++)
 	{
 		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~3
-		preference.Add((EEnemyPreference)i, ran);
+		SetMap((EEnemyPreference)i, ran);
 		randomList.RemoveAt(ran);
 	}
 	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, 4));
@@ -80,23 +81,23 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	int ranNum = FMath::RandRange(1, 100);
 	int chooseVal = 0;
 	if (first >= ranNum)
-		chooseVal = 0;
-	else if (first + second >= ranNum)
 		chooseVal = 1;
-	else if (first + second + third >= ranNum)
+	else if (first + second >= ranNum)
 		chooseVal = 2;
-	else
+	else if (first + second + third >= ranNum)
 		chooseVal = 3;
+	else
+		chooseVal = 4;
 
 	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
 	EEnemyState state;
 	switch (prefer)
 	{
-	case EEnemyPreference::TotalAttack:
-		state = EEnemyState::TotalAttack;
+	case EEnemyPreference::BigAttack:
+		state = EEnemyState::BigAttack;
 		break;
-	case EEnemyPreference::SingleAttack:
-		state = EEnemyState::SingleAttack;
+	case EEnemyPreference::SmallAttack:
+		state = EEnemyState::SmallAttack;
 		break;
 	case EEnemyPreference::Defence:
 		state = EEnemyState::Defence;
@@ -108,9 +109,10 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		state = EEnemyState::HethalMove;
 		break;
 	default:
+		state = EEnemyState::SmallAttack;
 		break;
 	}
-	return state;
+	return EEnemyState::SmallAttack;
 }
 
 void AEnemy::InitCharacter()
