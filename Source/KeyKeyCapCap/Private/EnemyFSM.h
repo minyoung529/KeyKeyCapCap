@@ -34,7 +34,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
+	UPROPERTY(EditAnywhere, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
 	bool Attack(float damage);
@@ -48,6 +48,7 @@ public://fsm function
 	void Defence();
 	void Heal();
 	void HethalMove();
+	UFUNCTION()
 	void Damage();
 	void Death();
 public:

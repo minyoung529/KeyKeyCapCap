@@ -26,17 +26,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float attack = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float maxHp = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float hp = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float level = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float heal = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float shield = 0;
 public:
 	virtual void InitCharacter();

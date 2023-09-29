@@ -39,7 +39,7 @@ public:
 	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
-	UPROPERTY(BlueprintReadOnly, Category = GameInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
 		TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float needHethalMoveTime;

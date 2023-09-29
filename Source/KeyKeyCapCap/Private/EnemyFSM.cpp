@@ -45,7 +45,6 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		break;
 	case EEnemyState::SmallAttack:
 		SmallAttack();
-		Attack(me->attack * 1.2f);
 		break;
 	case EEnemyState::Defence:
 		Defence();
@@ -154,7 +153,7 @@ void UEnemyFSM::HethalMove()
 	canUseHethalMove = false;
 	currentCoolTime = 0;
 }
-
+UFUNCTION()
 void UEnemyFSM::Damage()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Damage"));

@@ -89,6 +89,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	else
 		chooseVal = 4;
 
+	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"),chooseVal);
 	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
 	EEnemyState state;
 	switch (prefer)
