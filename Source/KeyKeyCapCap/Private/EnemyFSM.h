@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EnemyFSM.generated.h"
-UENUM()
+UENUM(BlueprintType)
 enum class EEnemyState : uint8
 {
-	Move,
-	Death,
-	TotalAttack, //전체 인원 공격
-	SingleAttack, //한 명 공격
+	BigAttack, //전체 인원 공격
+	SmallAttack, //한 명 공격
 	Defence,
 	Heal,
 	HethalMove, // 필살기
+	Move,
+	Death,
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -34,20 +34,21 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
+	UPROPERTY(EditAnywhere, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
-	void Attack();
+	bool Attack(float damage);
 	void FindTargets();
 	void FindTarget();
 	EEnemyState ChooseNextAct();
 public://fsm function
 	void Move();
-	void TotalAttack();
-	void SingleAttack();
+	void BigAttack();
+	void SmallAttack();
 	void Defence();
 	void Heal();
 	void HethalMove();
+	UFUNCTION()
 	void Damage();
 	void Death();
 public:
@@ -55,7 +56,7 @@ public:
 	UPROPERTY()
 		class AEnemy* me;
 	UPROPERTY(EditAnywhere, Category = FSM)
-		class ACharacter* target;
+		class AActor* target;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float dieSpeed = 50.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
@@ -74,7 +75,8 @@ public:
 	bool isDefence = false; 
 private: // cool time
 	float currentCoolTime = 0;
-	float currentTime = 0;
+	float currentHealTime = 0;
+	float currentAttackTime = 0;
 public:
 	void CoolTime();
 };
