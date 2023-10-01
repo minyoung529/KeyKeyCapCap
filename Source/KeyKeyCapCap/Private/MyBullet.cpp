@@ -35,7 +35,7 @@ void AMyBullet::Tick(float DeltaTime)
 	FVector destination = GetActorLocation();
 	destination += direction * speed * DeltaTime;
 	SetActorLocation(destination);
-
+	timer += DeltaTime;
 	if (timer >= 5.f)
 	{
 		Destroy();
