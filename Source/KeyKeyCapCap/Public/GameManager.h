@@ -28,9 +28,18 @@ private:
 	TArray<class AMyGun*> guns;
 
 	int curGunIdx = 0;
+	const int MAX_HP = 100;
+	int hp = MAX_HP;
 
 public:
 	void AddKeyCap(AKeycapActor* keycap);
 	void AddGun(AMyGun* gun);
-	void Shoot();
+	void Shoot(int level, FVector color);
+
+	int GetLevel();
+
+	void AddHp(int hp);
+	int GetHp();
+
+	void ResetGameManager();
 };

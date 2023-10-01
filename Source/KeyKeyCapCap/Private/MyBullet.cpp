@@ -18,9 +18,13 @@ AMyBullet::AMyBullet()
 void AMyBullet::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorRelativeScale3D(FVector(0.0075f, 0.0075f, 0.0075f));
-	SetActorLocation(GetActorLocation() + FVector::UpVector);
+
+	defaultSize = FVector(0.0075f, 0.0075f, 0.0075f);
 	direction = FVector::LeftVector;
+	defaultSpeed = speed;
+
+	SetActorRelativeScale3D(defaultSize);
+	SetActorLocation(GetActorLocation() + FVector::UpVector);
 }
 
 // Called every frame
@@ -31,6 +35,11 @@ void AMyBullet::Tick(float DeltaTime)
 	FVector destination = GetActorLocation();
 	destination += direction * speed * DeltaTime;
 	SetActorLocation(destination);
+	timer += DeltaTime;
+	if (timer >= 5.f)
+	{
+		Destroy();
+	}
 }
 
 void AMyBullet::SetMesh()
@@ -41,4 +50,13 @@ void AMyBullet::SetMesh()
 	{
 		baseMesh->SetStaticMesh(NewMesh);
 	}
+}
+
+void AMyBullet::SetDamage(int level, FVector color)
+{
+	baseMesh->SetVectorParameterValueOnMaterials(TEXT("Color"), color);
+	baseMesh->SetVectorParameterValueOnMaterials(TEXT("EmissionColor"), color);
+
+	damage = level + 1;
+	speed = defaultSpeed + 10 * level;
 }

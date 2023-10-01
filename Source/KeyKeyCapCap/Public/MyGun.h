@@ -34,5 +34,5 @@ private:
 	USceneComponent* fireTransform;
 
 public:
-	void Fire();
+	void Fire(int level, FVector color);
 };

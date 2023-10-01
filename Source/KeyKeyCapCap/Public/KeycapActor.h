@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "MyKeyLibrary.h"
 #include "GameFramework/Actor.h"
+#include "Particles/ParticleSystem.h"
 #include "KeycapActor.generated.h"
 
 const int MAX_LEVEL = 7;
@@ -30,6 +31,11 @@ public:
 public:
 	void SetMesh();
 
+	int GetKeycapLevel()
+	{
+		return level;
+	}
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KeyInput)
 	KEY_TYPE key;
@@ -42,6 +48,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (MakeEditWidget = true))
 	TArray<FVector> upgradeColors;
+
+	UPROPERTY()
+	class UParticleSystem* upgradeParticle;
+
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)

@@ -27,8 +27,49 @@ void GameManager::AddGun(AMyGun* gun)
 	guns.Add(gun);
 }
 
-void GameManager::Shoot()
+void GameManager::Shoot(int level, FVector color)
 {
 	curGunIdx = (curGunIdx + 1) % guns.Num();
-	guns[curGunIdx]->Fire();
+	guns[curGunIdx]->Fire(level, color);
+}
+
+int GameManager::GetLevel()
+{
+	int minLevel = 999;
+
+	for (int i = 0; i < keycaps.Num(); i++)
+	{
+		int keycapLevel = keycaps[i]->GetKeycapLevel();
+
+		if (keycapLevel < minLevel)
+		{
+			minLevel = keycapLevel;
+		}
+	}
+
+	return minLevel;
+}
+
+void GameManager::AddHp(int _hp)
+{
+	hp += _hp;
+
+	if (hp <= 0)
+	{
+		// GameOver
+	}
+}
+
+int GameManager::GetHp()
+{
+	return hp;
+}
+
+void GameManager::ResetGameManager()
+{
+	hp = MAX_HP;
+	curGunIdx = 0;
+
+	keycaps.Reset();
+	guns.Reset();
 }

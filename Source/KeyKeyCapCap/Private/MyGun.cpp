@@ -1,6 +1,7 @@
 #include "MyGun.h"
 #include "GameManager.h"
 #include "MyBullet.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyGun::AMyGun()
@@ -15,6 +16,11 @@ AMyGun::AMyGun()
 void AMyGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (GameManager::GetInstance() == nullptr)
+	{
+		return;
+	}
 
 	GameManager::GetInstance()->AddGun(this);
 }
@@ -33,10 +39,15 @@ void AMyGun::Tick(float DeltaTime)
 	}
 }
 
-void AMyGun::Fire()
+void AMyGun::Fire(int level, FVector color)
 {
-	AMyBullet* bullet =
-		GetWorld()->SpawnActor<AMyBullet>(AMyBullet::StaticClass(),
-			GetActorLocation() /*+ fireTransform->GetRelativeLocation()*/,
-			FRotator(), FActorSpawnParameters());
+	FName path = TEXT("Class'/Game/BP/MyBullet_BP.MyBullet_BP_C'");
+	UClass* GeneratedBP = Cast<UClass>(StaticLoadObject(UClass::StaticClass(), NULL, *path.ToString()));
+
+	if (GeneratedBP == nullptr)return;
+
+	AMyBullet* bullet = dynamic_cast<AMyBullet*>
+		(GetWorld()->SpawnActor<AActor>(GeneratedBP, GetActorLocation(), FRotator::ZeroRotator));
+
+	bullet->SetDamage(level, color);
 }

@@ -26,6 +26,10 @@ public:
 private:
 	FVector direction;
 	float timer = 0.f;
+	int damage;
+
+	float defaultSpeed;
+	FVector defaultSize;
 
 public:
 	void SetMesh();
@@ -42,6 +46,13 @@ public:
 	FVector GetDirection()
 	{
 		return direction;
+	}
+
+	void SetDamage(int level, FVector color);
+
+	int GetDamage()
+	{
+		return damage;
 	}
 
 public:
