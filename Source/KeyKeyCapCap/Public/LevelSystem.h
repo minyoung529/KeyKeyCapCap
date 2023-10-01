@@ -31,6 +31,10 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
+	int initLevel = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
+	int initValue = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
 	int level = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
 	float levelValue = 0;

@@ -11,7 +11,8 @@ void ULevelSystem::Success()
 void ULevelSystem::ResetValue(float maxScale)
 {
 	isStopped = false;
-	levelValue = 0;
+	levelValue = initValue;
+	level = initLevel;
 }
 void ULevelSystem::Reset(float maxScale)
 {
