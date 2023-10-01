@@ -5,6 +5,7 @@
 #include "GameManager.h"
 //#include "C:/Program Files/Epic Games/UE/UE_5.1/Engine/Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 AKeycapActor::AKeycapActor()
@@ -24,6 +25,13 @@ AKeycapActor::AKeycapActor()
 	upgradeColors.Add(FVector(0.422222f, 0.f, 1.0f));
 
 	level = 0;
+
+	ConstructorHelpers::FObjectFinder<UParticleSystem> keycapParticle(TEXT("/Script/Engine.ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Sparks/P_Sparks_C.P_Sparks_C'"));
+
+	if (keycapParticle.Succeeded())
+	{
+		upgradeParticle = keycapParticle.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +54,11 @@ void AKeycapActor::SetLevel()
 
 		if (level >= 1 && level <= MAX_LEVEL)
 		{
+			//UGamePlayStatics::Spawn(, FName("Muzzle"));
+
+			FBox box = GetComponentsBoundingBox();
+			UGameplayStatics::SpawnEmitterAttached(upgradeParticle, baseMesh, TEXT("Upgrade Particle"),
+				GetActorLocation() + box.GetCenter() + FVector::UpVector * 5);
 			baseMesh->SetVectorParameterValueOnMaterials(TEXT("Color"), upgradeColors[level - 1]);
 		}
 	}
@@ -58,6 +71,9 @@ void AKeycapActor::Tick(float DeltaTime)
 
 	const char* fkey = MyKeyLibrary::GetKey(key);
 
+	if (GetWorld() == nullptr)return;
+	if (GetWorld()->GetFirstPlayerController() == nullptr)return;
+
 	// INPUT
 	if (GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(FKey(FName(fkey))))
 	{
@@ -68,7 +84,15 @@ void AKeycapActor::Tick(float DeltaTime)
 		clickNum++;
 
 		SetLevel();
-		GameManager::GetInstance()->Shoot();
+
+		if (level >= 1)
+		{
+			GameManager::GetInstance()->Shoot(level, upgradeColors[level - 1]);
+		}
+		else
+		{
+			GameManager::GetInstance()->Shoot(0, FVector::ZeroVector);
+		}
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), enterEffect, GetActorLocation(), baseMesh->GetComponentRotation());
 	}
 
