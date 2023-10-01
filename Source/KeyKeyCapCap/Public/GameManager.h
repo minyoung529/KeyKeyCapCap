@@ -28,7 +28,7 @@ private:
 	TArray<class AMyGun*> guns;
 
 	int curGunIdx = 0;
-	const int MAX_HP = 100;
+	const int MAX_HP = 50;
 	int hp = MAX_HP;
 
 public:
