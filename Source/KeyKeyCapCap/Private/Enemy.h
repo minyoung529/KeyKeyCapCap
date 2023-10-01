@@ -7,11 +7,11 @@
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
 #include "Enemy.generated.h"
-UENUM()
-enum class EEnemyPreference :uint8
+UENUM(BlueprintType)
+enum class EEnemyPreference : uint8
 {
-	TotalAttack, //전체 인원 공격
-	SingleAttack, //한 명 공격
+	BigAttack, //강공
+	SmallAttack, //약공
 	Defence,
 	Heal,
 	HethalMove, // 필살기
@@ -39,7 +39,7 @@ public:
 	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
-	UPROPERTY(BlueprintReadOnly, Category = GameInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
 		TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float needHethalMoveTime;
@@ -52,7 +52,4 @@ private:
 public:
 	EEnemyState GetMap();
 	void ChangeHp(int);
-private:
-	FString EnumToString(EEnemyPreference EnumValue);
-	EEnemyState StringToEnum(FString StringValue);
 };

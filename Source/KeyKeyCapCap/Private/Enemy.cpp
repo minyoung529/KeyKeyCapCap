@@ -15,7 +15,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
+	InitMap();
 }
 
 // Called every frame
@@ -35,12 +35,14 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::InitMap()
 {
 	srand((unsigned)time(NULL));
-
-	TArray<int32> randomList = { 0,1,2,3 };
+	//0 : high priority
+	//4 : low priority
+	TArray<int32> randomList = { 1, 2,3 };
+	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::HethalMove, 0));
 	for (int i = 1; i <= 3; i++)
 	{
-		int32 ran = FMath::RandRange(1, randomList.Num()); //find random between 1~3
-		preference.Add((EEnemyPreference)i, ran);
+		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~3
+		SetMap((EEnemyPreference)i, ran);
 		randomList.RemoveAt(ran);
 	}
 	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, 4));
@@ -65,7 +67,7 @@ EEnemyState AEnemy::GetMap()
 	{
 		result = GetRandomVal(40, 35, 25, 0);
 	}
-	return EEnemyState();
+	return result;
 }
 
 void AEnemy::ChangeHp(int changeHp)
@@ -86,7 +88,32 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		chooseVal = 3;
 	else
 		chooseVal = 4;
-	return StringToEnum(EnumToString(*preference.FindKey(chooseVal)));
+
+	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"),chooseVal);
+	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
+	EEnemyState state;
+	switch (prefer)
+	{
+	case EEnemyPreference::BigAttack:
+		state = EEnemyState::BigAttack;
+		break;
+	case EEnemyPreference::SmallAttack:
+		state = EEnemyState::SmallAttack;
+		break;
+	case EEnemyPreference::Defence:
+		state = EEnemyState::Defence;
+		break;
+	case EEnemyPreference::Heal:
+		state = EEnemyState::Heal;
+		break;
+	case EEnemyPreference::HethalMove:
+		state = EEnemyState::HethalMove;
+		break;
+	default:
+		state = EEnemyState::SmallAttack;
+		break;
+	}
+	return EEnemyState::SmallAttack;
 }
 
 void AEnemy::InitCharacter()
@@ -95,26 +122,4 @@ void AEnemy::InitCharacter()
 
 void AEnemy::Act()
 {
-}
-
-FString AEnemy::EnumToString(EEnemyPreference EnumValue)
-{
-	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyPreference"), true);
-	if (!EnumPtr)
-	{
-		return FString(TEXT("Invalid"));
-	}
-
-	return EnumPtr->GetNameStringByValue((int32)EnumValue);
-}
-
-EEnemyState AEnemy::StringToEnum(FString StringValue)
-{
-	static UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEnemyState"), true);
-	if (!EnumPtr)
-	{
-		return EEnemyState::Move; // Return some default value or handle the error as needed.
-	}
-
-	return (EEnemyState)EnumPtr->GetIndexByName(*StringValue);
 }
