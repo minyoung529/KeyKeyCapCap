@@ -33,6 +33,8 @@ private:
 	UPROPERTY()
 	USceneComponent* fireTransform;
 
+	UClass* GeneratedBP;
+
 public:
 	void Fire(int level, FVector color);
 };
