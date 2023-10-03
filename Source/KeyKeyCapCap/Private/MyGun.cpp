@@ -22,6 +22,9 @@ void AMyGun::BeginPlay()
 		return;
 	}
 
+	FName path = TEXT("Class'/Game/BP/MyBullet_BP.MyBullet_BP_C'");
+	GeneratedBP = Cast<UClass>(StaticLoadObject(UClass::StaticClass(), NULL, *path.ToString()));
+
 	GameManager::GetInstance()->AddGun(this);
 }
 
@@ -41,13 +44,11 @@ void AMyGun::Tick(float DeltaTime)
 
 void AMyGun::Fire(int level, FVector color)
 {
-	FName path = TEXT("Class'/Game/BP/MyBullet_BP.MyBullet_BP_C'");
-	UClass* GeneratedBP = Cast<UClass>(StaticLoadObject(UClass::StaticClass(), NULL, *path.ToString()));
-
 	if (GeneratedBP == nullptr)return;
-
-	AMyBullet* bullet = dynamic_cast<AMyBullet*>
-		(GetWorld()->SpawnActor<AActor>(GeneratedBP, GetActorLocation(), FRotator::ZeroRotator));
-
+	UWorld* world = GetWorld();
+	if (world == nullptr)return;
+	
+	FVector location = GetActorLocation();
+	AMyBullet* bullet = world->SpawnActor<AMyBullet>(GeneratedBP, location, FRotator::ZeroRotator);
 	bullet->SetDamage(level, color);
 }

@@ -18,6 +18,8 @@ AKeycapGenerator::AKeycapGenerator()
 void AKeycapGenerator::BeginPlay()
 {
 	Super::BeginPlay();
+	GameManager::GetInstance()->ResetGameManager();
+
 	UWorld* world = GetWorld();
 
 	FActorSpawnParameters spawnParams;
