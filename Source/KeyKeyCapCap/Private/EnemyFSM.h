@@ -14,6 +14,7 @@ enum class EEnemyState : uint8
 	Heal,
 	HethalMove, // ÇÊ»ì±â
 	Move,
+	Idle,
 	Death,
 };
 

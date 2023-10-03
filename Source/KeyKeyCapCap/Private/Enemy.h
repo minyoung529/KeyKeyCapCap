@@ -7,6 +7,9 @@
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
 #include "Enemy.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChangeStateSignature);
+
 UENUM(BlueprintType)
 enum class EEnemyPreference : uint8
 {
@@ -45,6 +48,11 @@ public:
 		float needHethalMoveTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
 		class UEnemyFSM* fsm;
+
+		UFUNCTION()
+		void OnChangeStateEvent();
+		UPROPERTY(BlueprintAssignable, Category = "FSM")
+		FChangeStateSignature OnSuccessDelegate;
 private:
 	void InitMap();
 	void SetMap(EEnemyPreference, int32);

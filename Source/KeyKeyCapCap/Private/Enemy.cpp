@@ -32,6 +32,10 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AEnemy::OnChangeStateEvent()
+{
+}
+
 void AEnemy::InitMap()
 {
 	srand((unsigned)time(NULL));
