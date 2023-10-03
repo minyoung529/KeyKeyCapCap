@@ -3,6 +3,7 @@
 #include "EnemyFSM.h"
 #include "MyTESTKeyboard.h"
 #include "Enemy.h"
+#include "GameManager.h"
 #include <Kismet/GameplayStatics.h>
 #include <Components/CapsuleComponent.h>
 
@@ -31,7 +32,6 @@ void UEnemyFSM::BeginPlay()
 void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	CoolTime();
 	switch (mState)
 	{
 	case EEnemyState::Move:
@@ -52,29 +52,14 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	case EEnemyState::Heal:
 		Heal();
 		break;
-	case EEnemyState::HethalMove:
-		HethalMove();
-		break;
 	default:
 		break;
 	}
 }
-void UEnemyFSM::FindTargets()
-{
-}
-void UEnemyFSM::FindTarget()
-{
-}
 
 EEnemyState UEnemyFSM::ChooseNextAct()
 {
-	if (canUseHethalMove && canHethalMove) //필살기 사용 가능
-	{
-		canUseHethalMove = false;
-		currentCoolTime = 0;
-		return EEnemyState::HethalMove;
-	}
-
+	me->ChangeState();
 	return me->GetMap();
 }
 void UEnemyFSM::Move()
@@ -93,10 +78,12 @@ void UEnemyFSM::Move()
 }
 bool UEnemyFSM::Attack(float damage)
 {
-	UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
 	currentAttackTime += GetWorld()->DeltaTimeSeconds;
 	if (currentAttackTime > attackDelayTime)
 	{
+		UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
+		GameManager* mgr;
+		mgr->GetInstance()->AddHp(-damage);
 		currentAttackTime = 0;
 		mState = ChooseNextAct();
 		return true;
@@ -105,6 +92,7 @@ bool UEnemyFSM::Attack(float damage)
 	if (distance > attackRange)
 	{
 		mState = EEnemyState::Move;
+		me->ChangeState();
 	}
 	return false;
 }
@@ -143,24 +131,15 @@ void UEnemyFSM::Heal()
 		currentHealTime = 0;
 	}
 }
-
-void UEnemyFSM::HethalMove()
-{
-	UE_LOG(LogTemp, Log, TEXT("FSM_HethalMove"));
-	if (canHethalMove)
-		return;
-	//미니게임. 
-	canUseHethalMove = false;
-	currentCoolTime = 0;
-}
 UFUNCTION()
-void UEnemyFSM::Damage()
+void UEnemyFSM::Damage(float damage)
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Damage"));
-	me->hp--;
+	me->hp -= damage;
 	if (me->hp <= 0)
 	{
 		mState = EEnemyState::Death;
+		me->ChangeState();
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	else
@@ -179,16 +158,6 @@ void UEnemyFSM::Death()
 	{
 		//die call!
 		me->Destroy();
-	}
-}
-
-void UEnemyFSM::CoolTime()
-{
-	currentCoolTime += GetWorld()->DeltaTimeSeconds;
-	if (currentCoolTime > hethalMoveDelayTime)
-	{
-		canUseHethalMove = true;
-		UE_LOG(LogTemp, Log, TEXT("FSM_CoolTimeFinished"));
 	}
 }
 
