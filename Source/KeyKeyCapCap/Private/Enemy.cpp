@@ -85,6 +85,11 @@ void AEnemy::ChangeHp(int changeHp)
 	hp += changeHp;
 }
 
+void AEnemy::InitTarget(AActor* target)
+{
+	fsm->target = target;
+}
+
 
 EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
@@ -115,9 +120,6 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		break;
 	case EEnemyPreference::Heal:
 		state = EEnemyState::Heal;
-		break;
-	case EEnemyPreference::HethalMove:
-		state = EEnemyState::HethalMove;
 		break;
 	default:
 		state = EEnemyState::SmallAttack;

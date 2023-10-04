@@ -64,4 +64,6 @@ public:
 	void ChangeState();
 	EEnemyState GetMap();
 	void ChangeHp(int);
+public:
+	void InitTarget(class AActor* target);
 };
