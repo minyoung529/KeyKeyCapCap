@@ -15,7 +15,7 @@ class KEYKEYCAPCAP_API AKeyKeyCapCapGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
+	virtual void StartPlay();
 
 	// TODO: UPDATE(tick) Ãß°¡
 };

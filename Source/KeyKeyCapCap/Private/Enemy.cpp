@@ -2,6 +2,7 @@
 
 
 #include "Enemy.h"
+#include "MyBullet.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -15,6 +16,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetMesh()->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
 	InitMap();
 }
 
@@ -60,6 +62,10 @@ void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
 		preference.Add(TTuple<EEnemyPreference, int32>(prefer, num));
 }
 
+void AEnemy::ChangeState()
+{
+}
+
 EEnemyState AEnemy::GetMap()
 {
 	EEnemyState result = EEnemyState::Move;
@@ -93,7 +99,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	else
 		chooseVal = 4;
 
-	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"),chooseVal);
+	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"), chooseVal);
 	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
 	EEnemyState state;
 	switch (prefer)
@@ -126,4 +132,14 @@ void AEnemy::InitCharacter()
 
 void AEnemy::Act()
 {
+}
+
+void AEnemy::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	auto bullet = Cast<AMyBullet>(OtherActor);
+	if (bullet)
+	{
+		bullet->Destroy();
+		fsm->Damage(bullet->GetDamage());
+	}
 }

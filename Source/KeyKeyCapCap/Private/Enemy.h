@@ -42,6 +42,8 @@ public:
 	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
 		TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
@@ -59,6 +61,7 @@ private:
 	void SetMap(EEnemyPreference, int32);
 	EEnemyState GetRandomVal(int, int, int, int);
 public:
+	void ChangeState();
 	EEnemyState GetMap();
 	void ChangeHp(int);
 };

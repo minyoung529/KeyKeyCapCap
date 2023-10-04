@@ -5,8 +5,8 @@
 #include "MyKeyLibrary.h"
 #include "GameManager.h"
 
-void AKeyKeyCapCapGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+void AKeyKeyCapCapGameModeBase::StartPlay()
 {
-	AGameModeBase::InitGame(MapName, Options, ErrorMessage);
+	AGameModeBase::StartPlay();
 	GameManager::GetInstance()->CreateInstance();
 }
