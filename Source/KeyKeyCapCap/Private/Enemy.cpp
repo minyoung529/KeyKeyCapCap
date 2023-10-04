@@ -116,9 +116,6 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	case EEnemyPreference::Heal:
 		state = EEnemyState::Heal;
 		break;
-	case EEnemyPreference::HethalMove:
-		state = EEnemyState::HethalMove;
-		break;
 	default:
 		state = EEnemyState::SmallAttack;
 		break;
