@@ -62,6 +62,8 @@ void MyKeyLibrary::SetKeyMap()
 #pragma region Other
 	keyMap[(int)KEY_TYPE::Tab] = "Tab";
 	keyMap[(int)KEY_TYPE::Enter] = "Enter";
+	keyMap[(int)KEY_TYPE::Space] = "SpaceBar";
+	keyMap[(int)KEY_TYPE::Shift] = "RightShift";
 #pragma endregion
 }
 
@@ -112,5 +114,6 @@ void MyKeyLibrary::SetMeshKeyMap()
 	meshKeyMap[(int)KEY_TYPE::Tab] = "Tab";
 	meshKeyMap[(int)KEY_TYPE::Enter] = "Enter";
 	meshKeyMap[(int)KEY_TYPE::Space] = "Space";
+	meshKeyMap[(int)KEY_TYPE::Shift] = "Shift";
 	meshKeyMap[(int)KEY_TYPE::Shift] = "Shift";
 }
