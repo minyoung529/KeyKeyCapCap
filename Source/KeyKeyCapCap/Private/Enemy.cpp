@@ -64,6 +64,10 @@ void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
 
 void AEnemy::ChangeState()
 {
+	if (OnChangeStateDelegate.IsBound())
+	{
+		OnChangeStateDelegate.Broadcast(fsm->mState); // This will call MyFunction with the parameter
+	}
 }
 
 EEnemyState AEnemy::GetMap()
