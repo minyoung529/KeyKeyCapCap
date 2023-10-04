@@ -8,8 +8,11 @@ AEnemyGenerator::AEnemyGenerator()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	OpponentClass = AEnemy::StaticClass();
+	ConstructorHelpers::FClassFinder<AEnemy> EnemyRefBP(TEXT("/Game/Battle/BP/BPBoss.BPBoss_c"));
+	if (EnemyRefBP.Class)
+	{
+		OpponentClass = EnemyRefBP.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +43,7 @@ void AEnemyGenerator::GenerateEnemy()
 {
 	//mouse pos ³Ö¾îÁÖ°í ·£´ýÀ¸·Î µ¹·Á¼­ Å¸°Ù Àæ±â
 	AActor* randomTargetPos = mousePos[FMath::RandRange(0, mousePos.Num() - 1)];
-	const FVector SpawnLocation = randomTargetPos->GetActorLocation() + FVector::UpVector * 88.0f;
+	const FVector SpawnLocation = randomTargetPos->GetActorLocation() + FVector::UpVector * 45.0f;
 	AActor* OpponentActor = GetWorld()->SpawnActor(OpponentClass, &SpawnLocation, &FRotator::ZeroRotator);
 
 	AEnemy* OpponentEnemy = Cast<AEnemy>(OpponentActor);
