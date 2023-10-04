@@ -69,16 +69,22 @@ void UEnemyFSM::Move()
 	// 방향
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
-	me->AddMovementInput(dir.GetSafeNormal());
+	me->AddMovementInput(dir.GetSafeNormal()*0.1f);
 	if (dir.Size() < attackRange)
 	{
 		mState = ChooseNextAct();
 		UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
 	}
 }
-bool UEnemyFSM::Attack(float damage)
+void UEnemyFSM::Attack(float damage)
 {
 	currentAttackTime += GetWorld()->DeltaTimeSeconds;
+	float distance = FVector::Distance(target->GetActorLocation(), me->GetActorLocation());
+	if (distance > attackRange)
+	{
+		mState = EEnemyState::Move;
+		me->ChangeState();
+	}
 	if (currentAttackTime > attackDelayTime)
 	{
 		UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
@@ -86,32 +92,18 @@ bool UEnemyFSM::Attack(float damage)
 		mgr->GetInstance()->AddHp(-damage);
 		currentAttackTime = 0;
 		mState = ChooseNextAct();
-		return true;
 	}
-	float distance = FVector::Distance(target->GetActorLocation(), me->GetActorLocation());
-	if (distance > attackRange)
-	{
-		mState = EEnemyState::Move;
-		me->ChangeState();
-	}
-	return false;
 }
 void UEnemyFSM::BigAttack()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_BigAttack"));
-	if (Attack(me->attack * FMath::RandRange(1.1f, 1.4f)))
-	{
-		//animation
-	}
+	Attack(me->attack * FMath::RandRange(1.1f, 1.4f));
 }
 
 void UEnemyFSM::SmallAttack()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_SmallAttack"));
-	if (Attack(me->attack * FMath::RandRange(0.7f, 0.9f)))
-	{
-		//animation
-	}
+	Attack(me->attack * FMath::RandRange(0.7f, 0.9f));
 }
 
 void UEnemyFSM::Defence()

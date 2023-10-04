@@ -37,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
-	bool Attack(float damage);
+	void Attack(float damage);
 	EEnemyState ChooseNextAct();
 public://fsm function
 	void Move();

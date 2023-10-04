@@ -42,19 +42,18 @@ public:
 	virtual void InitCharacter() override;
 	virtual void Act() override;
 public:
+	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
-		TMap<EEnemyPreference, int32> preference;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		float needHethalMoveTime;
+	TMap<EEnemyPreference, int32> preference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
-		class UEnemyFSM* fsm;
+	class UEnemyFSM* fsm;
 
-		UFUNCTION()
-		void OnChangeStateEvent(EEnemyState state);
-		UPROPERTY(BlueprintAssignable, Category = "FSM")
-		FChangeStateSignature OnChangeStateDelegate;
+	UFUNCTION()
+	void OnChangeStateEvent(EEnemyState state);
+	UPROPERTY(BlueprintAssignable, Category = "FSM")
+	FChangeStateSignature OnChangeStateDelegate;
 
 private:
 	void InitMap();

@@ -41,10 +41,10 @@ void AEnemyGenerator::GenerateEnemyLoop()
 
 void AEnemyGenerator::GenerateEnemy()
 {
-	//mouse pos ³Ö¾îÁÖ°í ·£´ýÀ¸·Î µ¹·Á¼­ Å¸°Ù Àæ±â
 	AActor* randomTargetPos = mousePos[FMath::RandRange(0, mousePos.Num() - 1)];
 	const FVector SpawnLocation = randomTargetPos->GetActorLocation() + FVector::UpVector * 2.0f + FVector::YAxisVector * -140.0;
 	AActor* OpponentActor = GetWorld()->SpawnActor(OpponentClass, &SpawnLocation, &FRotator::ZeroRotator);
+	UE_LOG(LogTemp, Log, TEXT("EnemyGenerate!"));
 
 	AEnemy* OpponentEnemy = Cast<AEnemy>(OpponentActor);
 	if (OpponentEnemy)

@@ -38,7 +38,4 @@ private:
 private:
 	UPROPERTY(EditAnywhere, Category = Generate, Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class AEnemy> OpponentClass;
-
-	UPROPERTY(EditAnywhere, Category = Generate, Meta = (AllowPrivateAccess = "true"))
-	float OpponentSpawnTime;
 };
