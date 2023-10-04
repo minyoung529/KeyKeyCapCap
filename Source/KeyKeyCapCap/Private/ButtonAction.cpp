@@ -23,6 +23,10 @@ void UButtonAction::OnSuccessEvent()
 {
 }
 
+void UButtonAction::OnFailEvent()
+{
+}
+
 void UButtonAction::Success()
 {
 	if (OnSuccessDelegate.IsBound() == true) OnSuccessDelegate.Broadcast();
@@ -31,6 +35,7 @@ void UButtonAction::Success()
 
 void UButtonAction::Fail()
 {
+	if (OnFailDelegate.IsBound() == true) OnFailDelegate.Broadcast();
 	Reset(clickCount);
 }
 

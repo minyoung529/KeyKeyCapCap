@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ButtonAction.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSuccessSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSignature);
 
 class UProgressBar;
 UCLASS(HideDropdown)
@@ -18,7 +18,12 @@ public:
 	UFUNCTION()
 	void OnSuccessEvent();
 	UPROPERTY(BlueprintAssignable, Category = "Action")
-	FSuccessSignature OnSuccessDelegate;
+	FSignature OnSuccessDelegate;
+	
+	UFUNCTION()
+	void OnFailEvent();
+	UPROPERTY(BlueprintAssignable, Category = "Action")
+	FSignature OnFailDelegate;
 
 
 	void Success();

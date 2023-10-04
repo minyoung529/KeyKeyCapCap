@@ -32,7 +32,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AEnemy::OnChangeStateEvent()
+void AEnemy::OnChangeStateEvent(EEnemyState state)
 {
 }
 
