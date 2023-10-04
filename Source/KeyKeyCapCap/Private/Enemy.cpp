@@ -85,6 +85,11 @@ void AEnemy::ChangeHp(int changeHp)
 	hp += changeHp;
 }
 
+void AEnemy::InitTarget(AActor* target)
+{
+	fsm->target = target;
+}
+
 
 EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
