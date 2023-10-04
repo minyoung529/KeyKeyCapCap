@@ -12,7 +12,6 @@ enum class EEnemyState : uint8
 	SmallAttack, //한 명 공격
 	Defence,
 	Heal,
-	HethalMove, // 필살기
 	Move,
 	Idle,
 	Death,
@@ -39,8 +38,6 @@ public:
 		EEnemyState mState = EEnemyState::Move;
 private:
 	bool Attack(float damage);
-	void FindTargets();
-	void FindTarget();
 	EEnemyState ChooseNextAct();
 public://fsm function
 	void Move();
@@ -48,9 +45,8 @@ public://fsm function
 	void SmallAttack();
 	void Defence();
 	void Heal();
-	void HethalMove();
 	UFUNCTION()
-	void Damage();
+	void Damage(float damage);
 	void Death();
 public:
 	//own actor
@@ -66,18 +62,9 @@ public:
 		float attackDelayTime = 2.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float healDelayTime = 5.f;
-	UPROPERTY(EditAnywhere, Category = FSM)
-		float hethalMoveDelayTime = 15.f;
-	UPROPERTY(EditAnywhere, Category = FSM)
-		bool canHethalMove = false;
-	UPROPERTY(EditAnywhere, Category = FSM)
-		bool canUseHethalMove = false;
 	
 	bool isDefence = false; 
 private: // cool time
-	float currentCoolTime = 0;
 	float currentHealTime = 0;
 	float currentAttackTime = 0;
-public:
-	void CoolTime();
 };
