@@ -129,7 +129,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		state = EEnemyState::SmallAttack;
 		break;
 	}
-	return EEnemyState::SmallAttack;
+	return state;
 }
 
 void AEnemy::InitCharacter()
