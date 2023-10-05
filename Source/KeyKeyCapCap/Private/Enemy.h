@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "NiagaraSystem.h"
 #include "Enemy.generated.h"
 
@@ -14,8 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeStateSignature, EEnemyState, 
 UENUM(BlueprintType)
 enum class EEnemyPreference : uint8
 {
-	BigAttack, //°­°ø
-	SmallAttack, //¾à°ø
+	BigAttack, //ï¿½ï¿½ï¿½ï¿½
+	SmallAttack, //ï¿½ï¿½ï¿½
 	Defence,
 	Heal,
 };
@@ -28,9 +30,14 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* DeadSound;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 public:
 	// Called every frame

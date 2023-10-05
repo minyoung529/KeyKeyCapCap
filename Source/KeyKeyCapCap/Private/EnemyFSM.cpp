@@ -73,7 +73,7 @@ void UEnemyFSM::Move()
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
 	me->AddMovementInput(dir.GetSafeNormal());
-
+	
 	/*UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);*/
 	if (dir.Size() < attackRange)
 	{
@@ -157,10 +157,18 @@ void UEnemyFSM::Death()
 	FVector P = P0 + vt;
 	me->SetActorLocation(P);
 
+	
 	if (P.Z < -200.f)
 	{
 		//die call!
 		me->Destroy();
 	}
+	else
+	{
+		if (isDeadCall) return;
+		isDeadCall = true;
+		UGameplayStatics::PlaySound2D(this, DeadSound);
+	}
+	
 }
 
