@@ -23,14 +23,6 @@ public:
 	// Sets default values for this actor's properties
 	AKeycapActor();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USoundCue* ClickSound;
-
-
-	UFUNCTION()
-	void UClickEvent();
-	UPROPERTY(BlueprintAssignable, Category = "Action")
-	FClickSignature OnClickDelegate;
 
 protected:
 	// Called when the game starts or when spawned
@@ -65,6 +57,8 @@ public:
 	UPROPERTY()
 	class UParticleSystem* upgradeParticle;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundCue* ClickSound;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)

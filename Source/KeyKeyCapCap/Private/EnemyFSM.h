@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "EnemyFSM.generated.h"
 UENUM(BlueprintType)
 enum class EEnemyState : uint8
@@ -34,6 +36,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* DeadSound;
+
 	UPROPERTY(EditAnywhere, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:

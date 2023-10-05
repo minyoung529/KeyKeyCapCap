@@ -33,9 +33,8 @@ AKeycapActor::AKeycapActor()
 		upgradeParticle = keycapParticle.Object;
 	}
 
-}
-void AKeycapActor::UClickEvent()
-{
+
+
 }
 // Called when the game starts or when spawned
 void AKeycapActor::BeginPlay()
@@ -43,6 +42,7 @@ void AKeycapActor::BeginPlay()
 	Super::BeginPlay();
 
 	PrimaryActorTick.bCanEverTick = true;
+	UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 }
 
 void AKeycapActor::SetLevel()
@@ -73,6 +73,7 @@ void AKeycapActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	const char* fkey = MyKeyLibrary::GetKey(key);
+		UGameplayStatics::PlaySound2D(this, ClickSound);
 
 	if (GetWorld() == nullptr)return;
 	if (GetWorld()->GetFirstPlayerController() == nullptr)return;
@@ -80,7 +81,7 @@ void AKeycapActor::Tick(float DeltaTime)
 	// INPUT
 	if (GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(FKey(FName(fkey))))
 	{
-		if (OnClickDelegate.IsBound() == true) OnClickDelegate.Broadcast();
+		UGameplayStatics::PlaySound2D(this, ClickSound);
 
 		FVector	currentLocation = GetActorLocation();
 		currentLocation -= FVector::UpVector * moveDistance;
@@ -88,7 +89,6 @@ void AKeycapActor::Tick(float DeltaTime)
 
 		clickNum++;
 
-		UGameplayStatics::PlaySound2D(this, ClickSound);
 
 		if (level >= 1)
 		{

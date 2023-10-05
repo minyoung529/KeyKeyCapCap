@@ -148,6 +148,9 @@ void UEnemyFSM::Damage(float damage)
 
 void UEnemyFSM::Death()
 {
+	//효과음
+	UGameplayStatics::PlaySound2D(this, DeadSound);
+
 	//등속운동 P = P0 + vt
 	FVector P0 = me->GetActorLocation();
 	FVector vt = FVector::DownVector * dieSpeed * GetWorld()->DeltaTimeSeconds;

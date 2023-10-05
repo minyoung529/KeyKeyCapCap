@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "Enemy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeStateSignature, EEnemyState, State);
@@ -28,9 +30,14 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* DeadSound;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 public:
 	// Called every frame

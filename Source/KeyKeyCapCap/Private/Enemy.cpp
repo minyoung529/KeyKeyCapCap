@@ -18,6 +18,8 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetMesh()->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
 	InitMap();
+
+
 }
 
 // Called every frame
