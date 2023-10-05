@@ -17,7 +17,6 @@ enum class EEnemyPreference : uint8
 	SmallAttack, //약공
 	Defence,
 	Heal,
-	HethalMove, // 필살기
 };
 UCLASS()
 class AEnemy : public ACombatCharacter
@@ -64,5 +63,6 @@ public:
 	EEnemyState GetMap();
 	void ChangeHp(int);
 public:
+	UFUNCTION(BlueprintCallable)
 	void InitTarget(class AActor* target);
 };

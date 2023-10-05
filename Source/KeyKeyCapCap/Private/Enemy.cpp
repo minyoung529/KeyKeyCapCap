@@ -9,6 +9,7 @@ AEnemy::AEnemy()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
 }
 
@@ -44,10 +45,9 @@ void AEnemy::InitMap()
 	//0 : high priority
 	//4 : low priority
 	TArray<int32> randomList = { 1, 2,3 };
-	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::HethalMove, 0));
 	for (int i = 1; i <= 3; i++)
 	{
-		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~3
+		int32 ran = FMath::RandRange(1, randomList.Num() - 1); //find random between 0~3
 		SetMap((EEnemyPreference)i, ran);
 		randomList.RemoveAt(ran);
 	}
@@ -88,7 +88,7 @@ void AEnemy::ChangeHp(int changeHp)
 {
 	hp += changeHp;
 }
-
+UFUNCTION(BlueprintCallable)
 void AEnemy::InitTarget(AActor* target)
 {
 	fsm->target = target;

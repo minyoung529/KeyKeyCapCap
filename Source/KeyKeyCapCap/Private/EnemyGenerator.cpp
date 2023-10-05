@@ -43,7 +43,7 @@ void AEnemyGenerator::GenerateEnemyLoop()
 void AEnemyGenerator::GenerateEnemy()
 {
 	AActor* randomTargetPos = mousePos[FMath::RandRange(0, mousePos.Num() - 1)];
-	const FVector SpawnLocation = randomTargetPos->GetActorLocation() + FVector::UpVector * 5.0f + FVector::YAxisVector * -120.0;
+	const FVector SpawnLocation = randomTargetPos->GetActorLocation() + FVector::UpVector * 2.0f + FVector::YAxisVector * -120.0;
 	AActor* OpponentActor = GetWorld()->SpawnActor(OpponentClass, &SpawnLocation, &FRotator::ZeroRotator);
 	UE_LOG(LogTemp, Log, TEXT("EnemyGenerate!"));
 
