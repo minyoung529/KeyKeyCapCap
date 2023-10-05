@@ -71,6 +71,8 @@ private: // cool time
 		float healDelayTime = 3.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float defenceDelayTime = 5.f;
+
+	bool isDeadCall = false;
 public:
 	bool isDefence = false; 
 	float currentHealTime = 0;

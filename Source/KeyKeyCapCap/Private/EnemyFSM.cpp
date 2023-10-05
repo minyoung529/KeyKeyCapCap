@@ -73,17 +73,16 @@ void UEnemyFSM::Move()
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
 	me->AddMovementInput(dir.GetSafeNormal());
-<<<<<<< HEAD
+	
 	/*UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);*/
 	if (dir.Size() < attackRange)
 	{
 		ChooseNextAct();
 		UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
-=======
-	if (dir.Size() < attackRange)
+	/*if (dir.Size() < attackRange)
 	{
 		mState = ChooseNextAct();
->>>>>>> KeyCapStructure
+	*/
 	}
 }
 void UEnemyFSM::Attack(float damage)
@@ -156,19 +155,24 @@ void UEnemyFSM::Damage(float damage)
 
 void UEnemyFSM::Death()
 {
-	//효과음
-	UGameplayStatics::PlaySound2D(this, DeadSound);
-
 	//등속운동 P = P0 + vt
 	FVector P0 = me->GetActorLocation();
 	FVector vt = FVector::UpVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
 	FVector P = P0 + vt;
 	me->SetActorLocation(P);
 
+	
 	if (P.Z < -200.f)
 	{
 		//die call!
 		me->Destroy();
 	}
+	else
+	{
+		if (isDeadCall) return;
+		isDeadCall = true;
+		UGameplayStatics::PlaySound2D(this, DeadSound);
+	}
+	
 }
 
