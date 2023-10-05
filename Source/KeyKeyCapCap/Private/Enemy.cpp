@@ -18,7 +18,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	GetMesh()->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
-	InitMap();
+	InitPreferance();
 }
 
 // Called every frame
@@ -39,27 +39,20 @@ void AEnemy::OnChangeStateEvent(EEnemyState state)
 {
 }
 
-void AEnemy::InitMap()
+void AEnemy::InitPreferance()
 {
 	srand((unsigned)time(NULL));
 	//0 : high priority
 	//4 : low priority
-	TArray<int32> randomList = { 1, 2,3 };
-	for (int i = 1; i <= 3; i++)
+	TArray<int32> randomList = { 0, 1, 2 };
+	for (int i = 0; i < 3; i++)
 	{
-		int32 ran = FMath::RandRange(1, randomList.Num() - 1); //find random between 0~3
-		SetMap((EEnemyPreference)i, ran);
+		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~2
+
+		preferenceArr.Add((EEnemyPreference)ran);
 		randomList.RemoveAt(ran);
 	}
-	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, 4));
-}
-
-void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
-{
-	if (preference.Find(prefer))
-		preference[prefer] = num;
-	else
-		preference.Add(TTuple<EEnemyPreference, int32>(prefer, num));
+	preferenceArr.Add(EEnemyPreference::Heal);
 }
 
 void AEnemy::ChangeState()
@@ -99,17 +92,18 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
 	int ranNum = FMath::RandRange(1, 100);
 	int chooseVal = 0;
+
 	if (first >= ranNum)
-		chooseVal = 1;
+		chooseVal = 0;
 	else if (first + second >= ranNum)
-		chooseVal = 2;
+		chooseVal = 1;
 	else if (first + second + third >= ranNum)
-		chooseVal = 3;
+		chooseVal = 2;
 	else
-		chooseVal = 4;
+		chooseVal = 3;
 
 	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"), chooseVal);
-	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
+	const EEnemyPreference prefer = preferenceArr[chooseVal];
 	EEnemyState state;
 	switch (prefer)
 	{

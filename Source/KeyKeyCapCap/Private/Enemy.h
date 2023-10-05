@@ -45,7 +45,7 @@ public:
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
-	TMap<EEnemyPreference, int32> preference;
+	TArray<EEnemyPreference> preferenceArr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
 	class UEnemyFSM* fsm;
 
@@ -55,8 +55,7 @@ public:
 	FChangeStateSignature OnChangeStateDelegate;
 
 private:
-	void InitMap();
-	void SetMap(EEnemyPreference, int32);
+	void InitPreferance();
 	EEnemyState GetRandomVal(int, int, int, int);
 public:
 	void ChangeState();
