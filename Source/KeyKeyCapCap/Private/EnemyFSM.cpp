@@ -25,6 +25,7 @@ void UEnemyFSM::BeginPlay()
 	//UE_LOG(LogTemp, Display, TEXT(Cast<AMyTESTKeyboard>(actor)->GetName()));
 	me = Cast<AEnemy>(GetOwner());
 	mState = EEnemyState::Move;
+	me->ChangeState();
 
 }
 
@@ -59,10 +60,10 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	}
 }
 
-EEnemyState UEnemyFSM::ChooseNextAct()
+void UEnemyFSM::ChooseNextAct()
 {
+	mState = me->GetMap();
 	me->ChangeState();
-	return me->GetMap();
 }
 void UEnemyFSM::Move()
 {
@@ -72,10 +73,10 @@ void UEnemyFSM::Move()
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
 	me->AddMovementInput(dir.GetSafeNormal());
-	UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);
+	/*UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);*/
 	if (dir.Size() < attackRange)
 	{
-		mState = ChooseNextAct();
+		ChooseNextAct();
 		UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
 	}
 }
@@ -94,7 +95,7 @@ void UEnemyFSM::Attack(float damage)
 		GameManager* mgr;
 		mgr->GetInstance()->AddHp(-damage);
 		currentAttackTime = 0;
-		mState = ChooseNextAct();
+		ChooseNextAct();
 	}
 }
 void UEnemyFSM::BigAttack()
@@ -112,10 +113,12 @@ void UEnemyFSM::SmallAttack()
 void UEnemyFSM::Defence()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Defence"));
+	isDefence = true;
 	currentDefenceTime += GetWorld()->DeltaTimeSeconds;
 	if (currentDefenceTime > defenceDelayTime)
 	{
-		mState = ChooseNextAct();
+		isDefence = false;
+		ChooseNextAct();
 		currentHealTime = 0;
 	}
 }
@@ -128,7 +131,7 @@ void UEnemyFSM::Heal()
 	if (currentHealTime > healDelayTime)
 	{
 		me->ChangeHp(me->heal);
-		mState = ChooseNextAct();
+		ChooseNextAct();
 		currentHealTime = 0;
 	}
 }
@@ -137,6 +140,8 @@ void UEnemyFSM::Damage(float damage)
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Damage"));
 	me->hp -= damage;
+	if (isDefence)
+		me->hp += me->shield;
 	if (me->hp <= 0)
 	{
 		mState = EEnemyState::Death;
@@ -144,14 +149,14 @@ void UEnemyFSM::Damage(float damage)
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	else
-		mState = ChooseNextAct();
+		ChooseNextAct();
 }
 
 void UEnemyFSM::Death()
 {
 	//등속운동 P = P0 + vt
 	FVector P0 = me->GetActorLocation();
-	FVector vt = FVector::DownVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
+	FVector vt = FVector::UpVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
 	FVector P = P0 + vt;
 	me->SetActorLocation(P);
 

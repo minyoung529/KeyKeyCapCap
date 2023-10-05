@@ -38,7 +38,7 @@ public:
 		EEnemyState mState = EEnemyState::Move;
 private:
 	void Attack(float damage);
-	EEnemyState ChooseNextAct();
+	void ChooseNextAct();
 public://fsm function
 	void Move();
 	void BigAttack();
