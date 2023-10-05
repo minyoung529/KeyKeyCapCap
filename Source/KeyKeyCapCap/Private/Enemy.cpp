@@ -2,7 +2,11 @@
 
 
 #include "Enemy.h"
+#include "Components/CapsuleComponent.h"
 #include "MyBullet.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 AEnemy::AEnemy()
@@ -17,7 +21,9 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	GetMesh()->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
+	UCapsuleComponent* capCom = GetCapsuleComponent();
+	capCom->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
+
 	InitPreferance();
 }
 
@@ -60,6 +66,13 @@ void AEnemy::ChangeState()
 	if (OnChangeStateDelegate.IsBound())
 	{
 		OnChangeStateDelegate.Broadcast(fsm->mState); // This will call MyFunction with the parameter
+	}
+
+	// 일단 여기에 작성
+	if (fsm->mState == EEnemyState::Defence)
+	{
+		if (defenceVfx)
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), defenceVfx, GetActorLocation());
 	}
 }
 
