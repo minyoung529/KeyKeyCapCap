@@ -32,8 +32,11 @@ AKeycapActor::AKeycapActor()
 	{
 		upgradeParticle = keycapParticle.Object;
 	}
-}
 
+}
+void AKeycapActor::UClickEvent()
+{
+}
 // Called when the game starts or when spawned
 void AKeycapActor::BeginPlay()
 {
@@ -77,13 +80,15 @@ void AKeycapActor::Tick(float DeltaTime)
 	// INPUT
 	if (GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(FKey(FName(fkey))))
 	{
+		if (OnClickDelegate.IsBound() == true) OnClickDelegate.Broadcast();
+
 		FVector	currentLocation = GetActorLocation();
 		currentLocation -= FVector::UpVector * moveDistance;
 		SetActorLocation(currentLocation);
 
 		clickNum++;
 
-		SetLevel();
+		UGameplayStatics::PlaySound2D(this, ClickSound);
 
 		if (level >= 1)
 		{
@@ -93,6 +98,7 @@ void AKeycapActor::Tick(float DeltaTime)
 		{
 			GameManager::GetInstance()->Shoot(0, FVector::ZeroVector);
 		}
+
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), enterEffect, GetActorLocation(), baseMesh->GetComponentRotation());
 	}
 

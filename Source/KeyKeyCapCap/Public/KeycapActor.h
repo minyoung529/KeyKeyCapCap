@@ -6,9 +6,13 @@
 #include "MyKeyLibrary.h"
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "KeycapActor.generated.h"
 
 const int MAX_LEVEL = 7;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FClickSignature);
 
 UCLASS()
 class KEYKEYCAPCAP_API AKeycapActor : public AActor
@@ -18,6 +22,15 @@ class KEYKEYCAPCAP_API AKeycapActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AKeycapActor();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundCue* ClickSound;
+
+
+	UFUNCTION()
+	void UClickEvent();
+	UPROPERTY(BlueprintAssignable, Category = "Action")
+	FClickSignature OnClickDelegate;
 
 protected:
 	// Called when the game starts or when spawned
