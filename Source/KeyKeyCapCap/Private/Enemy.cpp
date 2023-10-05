@@ -68,11 +68,13 @@ void AEnemy::ChangeState()
 		OnChangeStateDelegate.Broadcast(fsm->mState); // This will call MyFunction with the parameter
 	}
 
+	UE_LOG(LogTemp, Log, TEXT("CHAGNE STATE - %d"), (int)fsm->mState);
+
 	// 일단 여기에 작성
 	if (fsm->mState == EEnemyState::Defence)
 	{
-		if (defenceVfx)
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), defenceVfx, GetActorLocation());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), defenceVfx, GetActorLocation(), FRotator::ZeroRotator, defenceVfxScale);
+		UE_LOG(LogTemp, Log, TEXT("EFFECT VFX"));
 	}
 }
 
@@ -149,7 +151,6 @@ void AEnemy::Act()
 
 void AEnemy::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("Enemy_Hit"));
 	auto bullet = Cast<AMyBullet>(OtherActor);
 	if (bullet)
 	{

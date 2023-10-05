@@ -58,6 +58,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VFX)
 	class UNiagaraSystem* defenceVfx;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VFX)
+	FVector defenceVfxScale;
+
 private:
 	void InitPreferance();
 	EEnemyState GetRandomVal(int, int, int, int);
