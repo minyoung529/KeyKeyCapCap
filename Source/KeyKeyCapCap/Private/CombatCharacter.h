@@ -38,7 +38,9 @@ public:
 		float heal = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
 		float shield = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameInfo)
+		float speed = 0;
 public:
-	virtual void InitCharacter();
+	virtual void InitCharacter(float, float, float, float, float, float);
 	virtual void Act();
 };

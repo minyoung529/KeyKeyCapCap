@@ -38,7 +38,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
-	virtual void InitCharacter() override;
+	virtual void InitCharacter(float, float, float, float, float, float) override;
 	virtual void Act() override;
 public:
 	UFUNCTION()

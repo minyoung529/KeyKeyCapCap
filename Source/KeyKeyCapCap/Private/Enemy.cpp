@@ -3,7 +3,7 @@
 
 #include "Enemy.h"
 #include "MyBullet.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -11,6 +11,7 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
+	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 // Called when the game starts or when spawned
@@ -126,7 +127,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	return state;
 }
 
-void AEnemy::InitCharacter()
+void AEnemy::InitCharacter(float, float, float, float, float, float)
 {
 }
 
@@ -134,6 +135,7 @@ void AEnemy::Act()
 {
 }
 
+UFUNCTION()
 void AEnemy::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Log, TEXT("Enemy_Hit"));

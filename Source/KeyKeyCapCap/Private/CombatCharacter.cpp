@@ -31,7 +31,7 @@ void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
-void ACombatCharacter::InitCharacter()
+void ACombatCharacter::InitCharacter(float attackVal, float maxHpVal, float levelVal, float healVal, float shieldVal,float speedVal)
 {
 	attack = 20;
 	maxHp = 100;
@@ -39,6 +39,7 @@ void ACombatCharacter::InitCharacter()
 	level = 1;
 	heal = 0;
 	shield = 0;
+	speed = 13;
 }
 
 void ACombatCharacter::Act()
