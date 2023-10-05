@@ -73,11 +73,17 @@ void UEnemyFSM::Move()
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
 	me->AddMovementInput(dir.GetSafeNormal());
+<<<<<<< HEAD
 	/*UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);*/
 	if (dir.Size() < attackRange)
 	{
 		ChooseNextAct();
 		UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
+=======
+	if (dir.Size() < attackRange)
+	{
+		mState = ChooseNextAct();
+>>>>>>> KeyCapStructure
 	}
 }
 void UEnemyFSM::Attack(float damage)
@@ -91,7 +97,6 @@ void UEnemyFSM::Attack(float damage)
 	}
 	if (currentAttackTime > attackDelayTime)
 	{
-		UE_LOG(LogTemp, Log, TEXT("FSM_attack"));
 		GameManager* mgr;
 		mgr->GetInstance()->AddHp(-damage);
 		currentAttackTime = 0;
@@ -100,13 +105,11 @@ void UEnemyFSM::Attack(float damage)
 }
 void UEnemyFSM::BigAttack()
 {
-	UE_LOG(LogTemp, Log, TEXT("FSM_BigAttack"));
 	Attack(me->attack * FMath::RandRange(1.1f, 1.4f));
 }
 
 void UEnemyFSM::SmallAttack()
 {
-	UE_LOG(LogTemp, Log, TEXT("FSM_SmallAttack"));
 	Attack(me->attack * FMath::RandRange(0.7f, 0.9f));
 }
 
@@ -114,6 +117,7 @@ void UEnemyFSM::Defence()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Defence"));
 	isDefence = true;
+	
 	currentDefenceTime += GetWorld()->DeltaTimeSeconds;
 	if (currentDefenceTime > defenceDelayTime)
 	{
@@ -125,7 +129,6 @@ void UEnemyFSM::Defence()
 
 void UEnemyFSM::Heal()
 {
-	UE_LOG(LogTemp, Log, TEXT("FSM_Heal"));
 	currentHealTime += GetWorld()->DeltaTimeSeconds;
 	// 힐 할 시 짐시 기다리기
 	if (currentHealTime > healDelayTime)
@@ -138,7 +141,6 @@ void UEnemyFSM::Heal()
 UFUNCTION()
 void UEnemyFSM::Damage(float damage)
 {
-	UE_LOG(LogTemp, Log, TEXT("FSM_Damage"));
 	me->hp -= damage;
 	if (isDefence)
 		me->hp += me->shield;

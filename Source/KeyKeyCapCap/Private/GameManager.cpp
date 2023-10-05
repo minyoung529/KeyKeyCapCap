@@ -4,6 +4,7 @@
 #include "KeycapActor.h"
 #include "MyGun.h"
 #include "MyKeyLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 GameManager::GameManager()
 {
@@ -53,7 +54,7 @@ int GameManager::GetLevel()
 void GameManager::AddHp(int _hp)
 {
 	hp += _hp;
-
+	UE_LOG(LogTemp, Log, TEXT("%d"), hp);
 	if (hp <= 0)
 	{
 		// GameOver
