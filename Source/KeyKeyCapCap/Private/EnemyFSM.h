@@ -43,8 +43,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = FSM)
 		EEnemyState mState = EEnemyState::Move;
 private:
-	bool Attack(float damage);
-	EEnemyState ChooseNextAct();
+	void Attack(float damage);
+	void ChooseNextAct();
 public://fsm function
 	void Move();
 	void BigAttack();
@@ -64,13 +64,17 @@ public:
 		float dieSpeed = 50.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float attackRange = 150.f;
+private: // cool time
 	UPROPERTY(EditAnywhere, Category = FSM)
 		float attackDelayTime = 2.f;
 	UPROPERTY(EditAnywhere, Category = FSM)
-		float healDelayTime = 5.f;
-	
+		float healDelayTime = 3.f;
+	UPROPERTY(EditAnywhere, Category = FSM)
+		float defenceDelayTime = 5.f;
+public:
 	bool isDefence = false; 
-private: // cool time
 	float currentHealTime = 0;
+	float currentDefenceTime = 0;
 	float currentAttackTime = 0;
+	
 };

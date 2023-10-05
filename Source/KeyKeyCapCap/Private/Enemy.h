@@ -8,6 +8,7 @@
 #include "CombatCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+#include "NiagaraSystem.h"
 #include "Enemy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeStateSignature, EEnemyState, State);
@@ -15,11 +16,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeStateSignature, EEnemyState, 
 UENUM(BlueprintType)
 enum class EEnemyPreference : uint8
 {
-	BigAttack, //°­°ø
-	SmallAttack, //¾à°ø
+	BigAttack, //ï¿½ï¿½ï¿½ï¿½
+	SmallAttack, //ï¿½ï¿½ï¿½
 	Defence,
 	Heal,
-	HethalMove, // ÇÊ»ì±â
 };
 UCLASS()
 class AEnemy : public ACombatCharacter
@@ -46,31 +46,37 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
-	virtual void InitCharacter() override;
+	virtual void InitCharacter(float, float, float, float, float, float) override;
 	virtual void Act() override;
 public:
+	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GameInfo)
-		TMap<EEnemyPreference, int32> preference;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = GameInfo)
-		float needHethalMoveTime;
+	TArray<EEnemyPreference> preferenceArr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)
-		class UEnemyFSM* fsm;
+	class UEnemyFSM* fsm;
 
-		UFUNCTION()
-		void OnChangeStateEvent(EEnemyState state);
-		UPROPERTY(BlueprintAssignable, Category = "FSM")
-		FChangeStateSignature OnChangeStateDelegate;
+	UFUNCTION()
+	void OnChangeStateEvent(EEnemyState state);
+	UPROPERTY(BlueprintAssignable, Category = "FSM")
+	FChangeStateSignature OnChangeStateDelegate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VFX)
+	class UNiagaraSystem* defenceVfx;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VFX)
+	FVector defenceVfxScale;
 
 private:
-	void InitMap();
-	void SetMap(EEnemyPreference, int32);
+	void InitPreferance();
 	EEnemyState GetRandomVal(int, int, int, int);
 public:
 	void ChangeState();
 	EEnemyState GetMap();
 	void ChangeHp(int);
 public:
+	UFUNCTION(BlueprintCallable)
 	void InitTarget(class AActor* target);
+
 };

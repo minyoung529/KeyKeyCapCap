@@ -2,13 +2,19 @@
 
 
 #include "Enemy.h"
+#include "Components/CapsuleComponent.h"
 #include "MyBullet.h"
-
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "GameManager.h"
+#include <Kismet/GameplayStatics.h>
+#include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
 }
 
@@ -16,10 +22,10 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	GetMesh()->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
-	InitMap();
+	UCapsuleComponent* capCom = GetCapsuleComponent();
+	capCom->OnComponentHit.AddDynamic(this, &AEnemy::OnHit);
 
-
+	InitPreferance();
 }
 
 // Called every frame
@@ -40,28 +46,20 @@ void AEnemy::OnChangeStateEvent(EEnemyState state)
 {
 }
 
-void AEnemy::InitMap()
+void AEnemy::InitPreferance()
 {
 	srand((unsigned)time(NULL));
 	//0 : high priority
 	//4 : low priority
-	TArray<int32> randomList = { 1, 2,3 };
-	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::HethalMove, 0));
-	for (int i = 1; i <= 3; i++)
+	TArray<int32> randomList = { 0, 1, 2 };
+	for (int i = 0; i < 3; i++)
 	{
-		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~3
-		SetMap((EEnemyPreference)i, ran);
+		int32 ran = FMath::RandRange(0, randomList.Num() - 1); //find random between 0~2
+
+		preferenceArr.Add((EEnemyPreference)ran);
 		randomList.RemoveAt(ran);
 	}
-	preference.Add(TTuple<EEnemyPreference, int32>(EEnemyPreference::Heal, 4));
-}
-
-void AEnemy::SetMap(EEnemyPreference prefer, int32 num)
-{
-	if (preference.Find(prefer))
-		preference[prefer] = num;
-	else
-		preference.Add(TTuple<EEnemyPreference, int32>(prefer, num));
+	preferenceArr.Add(EEnemyPreference::Heal);
 }
 
 void AEnemy::ChangeState()
@@ -69,6 +67,14 @@ void AEnemy::ChangeState()
 	if (OnChangeStateDelegate.IsBound())
 	{
 		OnChangeStateDelegate.Broadcast(fsm->mState); // This will call MyFunction with the parameter
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("CHAGNE STATE - %d"), (int)fsm->mState);
+
+	if (fsm->mState == EEnemyState::Defence)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), defenceVfx, GetActorLocation(), FRotator::ZeroRotator, defenceVfxScale);
+		UE_LOG(LogTemp, Log, TEXT("EFFECT VFX"));
 	}
 }
 
@@ -90,10 +96,11 @@ void AEnemy::ChangeHp(int changeHp)
 {
 	hp += changeHp;
 }
-
+UFUNCTION(BlueprintCallable)
 void AEnemy::InitTarget(AActor* target)
 {
 	fsm->target = target;
+	InitCharacter(20 + GameManager::GetInstance()->GetLevel() * 10.f, 30 + GameManager::GetInstance()->GetLevel() * 15.f, GameManager::GetInstance()->GetLevel(), 10 * GameManager::GetInstance()->GetLevel(), 20 * GameManager::GetInstance()->GetLevel(), 14 + GameManager::GetInstance()->GetLevel());
 }
 
 
@@ -101,17 +108,18 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 {
 	int ranNum = FMath::RandRange(1, 100);
 	int chooseVal = 0;
+
 	if (first >= ranNum)
-		chooseVal = 1;
+		chooseVal = 0;
 	else if (first + second >= ranNum)
-		chooseVal = 2;
+		chooseVal = 1;
 	else if (first + second + third >= ranNum)
-		chooseVal = 3;
+		chooseVal = 2;
 	else
-		chooseVal = 4;
+		chooseVal = 3;
 
 	UE_LOG(LogTemp, Log, TEXT("Enemy_RandomVal %d"), chooseVal);
-	const EEnemyPreference prefer = *preference.FindKey(chooseVal);
+	const EEnemyPreference prefer = preferenceArr[chooseVal];
 	EEnemyState state;
 	switch (prefer)
 	{
@@ -131,17 +139,20 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 		state = EEnemyState::SmallAttack;
 		break;
 	}
-	return EEnemyState::SmallAttack;
+	return state;
 }
 
-void AEnemy::InitCharacter()
+void AEnemy::InitCharacter(float attackVal, float maxHpVal, float levelVal, float healVal, float shieldVal, float speedVal)
 {
+	Super::InitCharacter(attackVal, maxHpVal, levelVal, healVal, shieldVal, speedVal);
+	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 void AEnemy::Act()
 {
 }
 
+UFUNCTION()
 void AEnemy::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	auto bullet = Cast<AMyBullet>(OtherActor);

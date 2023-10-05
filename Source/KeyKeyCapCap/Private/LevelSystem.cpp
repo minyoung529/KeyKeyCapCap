@@ -29,7 +29,7 @@ void ULevelSystem::AddLevel()
 void ULevelSystem::LevelUP()
 {
 	level++;
-	ResetValue(10);
+	ResetValue(10); 
 }
 
 void ULevelSystem::NativeConstruct()
