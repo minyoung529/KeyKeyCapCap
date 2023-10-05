@@ -6,6 +6,7 @@
 #include "MyBullet.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "GameManager.h"
 #include <Kismet/GameplayStatics.h>
 #include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
@@ -15,7 +16,6 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
-	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 // Called when the game starts or when spawned
@@ -98,6 +98,7 @@ UFUNCTION(BlueprintCallable)
 void AEnemy::InitTarget(AActor* target)
 {
 	fsm->target = target;
+	InitCharacter(20 + GameManager::GetInstance()->GetLevel() * 10.f, 30 + GameManager::GetInstance()->GetLevel() * 15.f, GameManager::GetInstance()->GetLevel(), 10 * GameManager::GetInstance()->GetLevel(), 20 * GameManager::GetInstance()->GetLevel(), 14 + GameManager::GetInstance()->GetLevel());
 }
 
 
@@ -139,8 +140,10 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	return state;
 }
 
-void AEnemy::InitCharacter(float, float, float, float, float, float)
+void AEnemy::InitCharacter(float attackVal, float maxHpVal, float levelVal, float healVal, float shieldVal, float speedVal)
 {
+	Super::InitCharacter(attackVal, maxHpVal, levelVal, healVal, shieldVal, speedVal);
+	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 void AEnemy::Act()
