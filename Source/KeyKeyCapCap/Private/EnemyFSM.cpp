@@ -106,15 +106,21 @@ void UEnemyFSM::SmallAttack()
 
 void UEnemyFSM::Defence()
 {
+	currentDefenceTime += GetWorld()->DeltaTimeSeconds;
+	if (currentDefenceTime > defenceDelayTime)
+	{
+		mState = ChooseNextAct();
+		currentHealTime = 0;
+	}
 }
 
 void UEnemyFSM::Heal()
 {
-	me->ChangeHp(me->heal);
 	currentHealTime += GetWorld()->DeltaTimeSeconds;
 	// Èú ÇÒ ½Ã Áü½Ã ±â´Ù¸®±â
 	if (currentHealTime > healDelayTime)
 	{
+		me->ChangeHp(me->heal);
 		mState = ChooseNextAct();
 		currentHealTime = 0;
 	}

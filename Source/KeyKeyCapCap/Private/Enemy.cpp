@@ -7,7 +7,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include <Kismet/GameplayStatics.h>
-
+#include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -15,6 +15,7 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
+	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 // Called when the game starts or when spawned
@@ -70,7 +71,6 @@ void AEnemy::ChangeState()
 
 	UE_LOG(LogTemp, Log, TEXT("CHAGNE STATE - %d"), (int)fsm->mState);
 
-	// 일단 여기에 작성
 	if (fsm->mState == EEnemyState::Defence)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), defenceVfx, GetActorLocation(), FRotator::ZeroRotator, defenceVfxScale);
@@ -141,7 +141,7 @@ EEnemyState AEnemy::GetRandomVal(int first, int second, int third, int fourth)
 	return state;
 }
 
-void AEnemy::InitCharacter()
+void AEnemy::InitCharacter(float, float, float, float, float, float)
 {
 }
 
@@ -149,6 +149,7 @@ void AEnemy::Act()
 {
 }
 
+UFUNCTION()
 void AEnemy::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	auto bullet = Cast<AMyBullet>(OtherActor);
