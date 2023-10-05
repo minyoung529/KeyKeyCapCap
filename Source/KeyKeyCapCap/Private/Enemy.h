@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyFSM.h"
 #include "CombatCharacter.h"
+#include "NiagaraSystem.h"
 #include "Enemy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeStateSignature, EEnemyState, State);
@@ -54,6 +55,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "FSM")
 	FChangeStateSignature OnChangeStateDelegate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VFX)
+	class UNiagaraSystem* defenceVfx;
+
 private:
 	void InitPreferance();
 	EEnemyState GetRandomVal(int, int, int, int);
@@ -64,4 +68,5 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	void InitTarget(class AActor* target);
+
 };

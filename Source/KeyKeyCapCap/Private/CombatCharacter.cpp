@@ -8,7 +8,7 @@ ACombatCharacter::ACombatCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	InitCharacter();
+	InitCharacter(20,100,1,10,30,13);
 }
 
 // Called when the game starts or when spawned
