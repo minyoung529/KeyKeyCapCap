@@ -73,17 +73,12 @@ void UEnemyFSM::Move()
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
 	me->AddMovementInput(dir.GetSafeNormal());
-<<<<<<< HEAD
+
 	/*UE_LOG(LogTemp, Log, TEXT("FSM_Move \n  my pos x : %f y : %f z : %f\n my dest x : %f y : %f z : %f\n dir x : %f y : %f z : %f"), me->GetActorLocation().X, me->GetActorLocation().Y, me->GetActorLocation().Z, dest.X, dest.Y, dest.Z, dir.X, dir.Y, dir.Z);*/
 	if (dir.Size() < attackRange)
 	{
 		ChooseNextAct();
 		UE_LOG(LogTemp, Log, TEXT("FSM_endMove"));
-=======
-	if (dir.Size() < attackRange)
-	{
-		mState = ChooseNextAct();
->>>>>>> KeyCapStructure
 	}
 }
 void UEnemyFSM::Attack(float damage)
@@ -117,7 +112,7 @@ void UEnemyFSM::Defence()
 {
 	UE_LOG(LogTemp, Log, TEXT("FSM_Defence"));
 	isDefence = true;
-	
+
 	currentDefenceTime += GetWorld()->DeltaTimeSeconds;
 	if (currentDefenceTime > defenceDelayTime)
 	{
