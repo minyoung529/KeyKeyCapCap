@@ -99,6 +99,7 @@ void AKeycapActor::Tick(float DeltaTime)
 			GameManager::GetInstance()->Shoot(0, FVector::ZeroVector);
 		}
 
+		SetLevel();
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), enterEffect, GetActorLocation(), baseMesh->GetComponentRotation());
 	}
 
