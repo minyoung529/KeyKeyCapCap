@@ -33,8 +33,12 @@ AKeycapActor::AKeycapActor()
 		upgradeParticle = keycapParticle.Object;
 	}
 
+	ConstructorHelpers::FObjectFinder<USoundCue> clickSoundCue(TEXT("/Script/Engine.SoundCue'/Game/Sound/ClickSoundCue.ClickSoundCue'"));
 
-
+	if (clickSoundCue.Succeeded())
+	{
+		ClickSound = clickSoundCue.Object;
+	}
 }
 // Called when the game starts or when spawned
 void AKeycapActor::BeginPlay()
@@ -42,7 +46,6 @@ void AKeycapActor::BeginPlay()
 	Super::BeginPlay();
 
 	PrimaryActorTick.bCanEverTick = true;
-	UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 }
 
 void AKeycapActor::SetLevel()
@@ -73,7 +76,6 @@ void AKeycapActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	const char* fkey = MyKeyLibrary::GetKey(key);
-		UGameplayStatics::PlaySound2D(this, ClickSound);
 
 	if (GetWorld() == nullptr)return;
 	if (GetWorld()->GetFirstPlayerController() == nullptr)return;
@@ -81,14 +83,12 @@ void AKeycapActor::Tick(float DeltaTime)
 	// INPUT
 	if (GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(FKey(FName(fkey))))
 	{
-		UGameplayStatics::PlaySound2D(this, ClickSound);
-
+		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 		FVector	currentLocation = GetActorLocation();
 		currentLocation -= FVector::UpVector * moveDistance;
 		SetActorLocation(currentLocation);
 
 		clickNum++;
-
 
 		if (level >= 1)
 		{
