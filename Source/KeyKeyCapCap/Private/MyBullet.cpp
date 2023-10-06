@@ -2,11 +2,12 @@
 
 
 #include "MyBullet.h"
+#include "GameManager.h"
 
 // Sets default values
 AMyBullet::AMyBullet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	baseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeycapMesh"));
@@ -57,6 +58,6 @@ void AMyBullet::SetDamage(int level, FVector color)
 	baseMesh->SetVectorParameterValueOnMaterials(TEXT("Color"), color);
 	baseMesh->SetVectorParameterValueOnMaterials(TEXT("EmissionColor"), color);
 
-	damage = level + 1;
+	damage = (level + 1) * (GameManager::GetInstance()->GetLevel() + 1);
 	speed = defaultSpeed + 10 * level;
 }

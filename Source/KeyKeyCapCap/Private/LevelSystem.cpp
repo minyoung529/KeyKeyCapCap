@@ -2,6 +2,7 @@
 
 
 #include "LevelSystem.h"
+#include "GameManager.h"
 
 void ULevelSystem::Success()
 {
@@ -42,4 +43,5 @@ void ULevelSystem::NativeConstruct()
 void ULevelSystem::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+	level = GameManager::GetInstance()->GetLevel() + 1;
 }
